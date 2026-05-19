@@ -60,6 +60,44 @@ function detectApi(company) {
     };
   }
 
+  // Recruitee — {subdomain}.recruitee.com
+  const recruiteeMatch = url.match(/([^/?#.]+)\.recruitee\.com/);
+  if (recruiteeMatch) {
+    return {
+      type: 'recruitee',
+      url: `https://${recruiteeMatch[1]}.recruitee.com/api/offers/`,
+    };
+  }
+
+  // SmartRecruiters — (jobs|careers).smartrecruiters.com/{CompanyId}
+  const srMatch = url.match(/(?:jobs|careers)\.smartrecruiters\.com\/([^/?#]+)/);
+  if (srMatch) {
+    return {
+      type: 'smartrecruiters',
+      url: `https://api.smartrecruiters.com/v1/companies/${srMatch[1]}/postings?limit=100`,
+    };
+  }
+
+  // Workable — apply.workable.com/{account}
+  const workableMatch = url.match(/apply\.workable\.com\/([^/?#]+)/);
+  if (workableMatch) {
+    return {
+      type: 'workable',
+      url: `https://apply.workable.com/api/v1/widget/accounts/${workableMatch[1]}`,
+    };
+  }
+
+  // Workday — {tenant}.{region}.myworkdayjobs.com/[{lang}/]{site}
+  const wdMatch = url.match(/([^/?#.]+)\.(wd[0-9]+)\.myworkdayjobs\.com\/(?:[a-z]{2}-[A-Z]{2}\/)?([^/?#]+)/);
+  if (wdMatch) {
+    const [, tenant, region, site] = wdMatch;
+    return {
+      type: 'workday',
+      url: `https://${tenant}.${region}.myworkdayjobs.com/wday/cxs/${tenant}/${site}/jobs`,
+      siteBase: `https://${tenant}.${region}.myworkdayjobs.com/${site}`,
+    };
+  }
+
   // Greenhouse EU boards
   const ghEuMatch = url.match(/job-boards(?:\.eu)?\.greenhouse\.io\/([^/?#]+)/);
   if (ghEuMatch && !company.api) {
@@ -104,20 +142,99 @@ function parseLever(json, companyName) {
   }));
 }
 
-const PARSERS = { greenhouse: parseGreenhouse, ashby: parseAshby, lever: parseLever };
+function parseRecruitee(json, companyName) {
+  const offers = json.offers || [];
+  return offers
+    .filter(o => o.status === 'published')
+    .map(o => ({
+      title: o.title || '',
+      url: o.careers_url || '',
+      company: companyName,
+      location: o.location || [o.city, o.country].filter(Boolean).join(', '),
+    }));
+}
+
+function parseSmartRecruiters(json, companyName) {
+  const content = json.content || [];
+  return content.map(p => ({
+    title: p.name || '',
+    url: p.company?.identifier
+      ? `https://jobs.smartrecruiters.com/${p.company.identifier}/${p.id}`
+      : '',
+    company: companyName,
+    location: p.location?.fullLocation
+      || [p.location?.city, p.location?.region, p.location?.country].filter(Boolean).join(', '),
+  }));
+}
+
+function parseWorkable(json, companyName) {
+  const jobs = json.jobs || [];
+  return jobs.map(j => ({
+    title: j.title || '',
+    url: j.shortlink || j.url || '',
+    company: companyName,
+    location: [j.city, j.state, j.country].filter(Boolean).join(', '),
+  }));
+}
+
+function parseWorkday(json, companyName, api) {
+  const jobs = json.jobPostings || [];
+  return jobs.map(j => ({
+    title: j.title || '',
+    url: j.externalPath ? `${api.siteBase}${j.externalPath}` : '',
+    company: companyName,
+    location: j.locationsText || '',
+  }));
+}
+
+const PARSERS = {
+  greenhouse: parseGreenhouse,
+  ashby: parseAshby,
+  lever: parseLever,
+  recruitee: parseRecruitee,
+  smartrecruiters: parseSmartRecruiters,
+  workable: parseWorkable,
+  workday: parseWorkday,
+};
 
 // ── Fetch with timeout ──────────────────────────────────────────────
 
-async function fetchJson(url) {
+async function fetchJson(url, init = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const res = await fetch(url, { signal: controller.signal });
+    const res = await fetch(url, { ...init, signal: controller.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function fetchApi(api) {
+  // Workday: POST + paginate (max 20/page). Only the first response reports
+  // a non-zero `total`; subsequent pages return 0, so we lock total once and
+  // also stop when a short page is returned.
+  if (api.type === 'workday') {
+    const limit = 20;
+    const aggregated = [];
+    let offset = 0;
+    let total = Infinity;
+    while (offset < total) {
+      const json = await fetchJson(api.url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ limit, offset, searchText: '', appliedFacets: {} }),
+      });
+      const page = json.jobPostings || [];
+      aggregated.push(...page);
+      if (offset === 0) total = json.total || page.length;
+      offset += limit;
+      if (page.length < limit) break;
+    }
+    return { jobPostings: aggregated };
+  }
+  return await fetchJson(api.url);
 }
 
 // ── Title filter ────────────────────────────────────────────────────
@@ -290,10 +407,10 @@ async function main() {
   const errors = [];
 
   const tasks = targets.map(company => async () => {
-    const { type, url } = company._api;
+    const { type } = company._api;
     try {
-      const json = await fetchJson(url);
-      const jobs = PARSERS[type](json, company.name);
+      const json = await fetchApi(company._api);
+      const jobs = PARSERS[type](json, company.name, company._api);
       totalFound += jobs.length;
 
       for (const job of jobs) {
