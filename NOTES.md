@@ -20,3 +20,4 @@
 9) VERSION file. Same logic: either keep it for your own release discipline or drop it.
 10) REWRITE package.json — name, repo URL, bugs URL, author.
 11) Rebrand attribution. AGENTS.md opens with an "Origin" paragraph crediting santifer and linking to his portfolio + cv-santiago. For a derivative, you keep his credit (license likely requires it) but add your own framing: "This is a derivative of santifer's career-ops, adapted for [TPM / PM / Mech Eng] roles." Same edit in README.md and CLAUDE.md/GEMINI.md if they have similar blocks.
+12) portals.yml: I think Portals search queries on top giving null as output, thus are not working, let see what happen.
