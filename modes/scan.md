@@ -41,7 +41,7 @@ Para empresas con API pública o feed estructurado, usar la respuesta JSON/XML c
 
 **Soporte actual (variables entre `{}`):**
 - **Greenhouse**: `https://boards-api.greenhouse.io/v1/boards/{company}/jobs`
-- **Ashby**: `https://jobs.ashbyhq.com/api/non-user-graphql?op=ApiJobBoardWithTeams`
+- **Ashby**: `https://api.ashbyhq.com/posting-api/job-board/{company}?includeCompensation=true`
 - **BambooHR**: lista `https://{company}.bamboohr.com/careers/list`; detalle de una oferta `https://{company}.bamboohr.com/careers/{id}/detail`
 - **Lever**: `https://api.lever.co/v0/postings/{company}?mode=json`
 - **Recruitee**: `https://{company}.recruitee.com/api/offers/`
@@ -52,7 +52,7 @@ Para empresas con API pública o feed estructurado, usar la respuesta JSON/XML c
 
 **Convención de parsing por provider:**
 - `greenhouse`: `jobs[]` → `title`, `absolute_url`
-- `ashby`: GraphQL `ApiJobBoardWithTeams` con `organizationHostedJobsPageName={company}` → `jobBoard.jobPostings[]` (`title`, `id`; construir URL pública si no viene en payload)
+- `ashby`: REST posting-api (`api.ashbyhq.com/posting-api/job-board/{company}?includeCompensation=true`) → `jobs[]` (`title`, `jobUrl`, `location`)
 - `bamboohr`: lista `result[]` → `jobOpeningName`, `id`; construir URL de detalle `https://{company}.bamboohr.com/careers/{id}/detail`; para leer el JD completo, hacer GET del detalle y usar `result.jobOpening` (`jobOpeningName`, `description`, `datePosted`, `minimumExperience`, `compensation`, `jobOpeningShareUrl`)
 - `lever`: array raíz `[]` → `text`, `hostedUrl` (fallback: `applyUrl`)
 - `recruitee`: `offers[]` filtrado por `status === 'published'` → `title`, `careers_url`, `location` (o `city`+`country`)
@@ -91,11 +91,8 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
 5. **Nivel 2 — ATS APIs / feeds** (paralelo):
    Para cada empresa en `tracked_companies` con `api:` definida y `enabled: true`:
    a. WebFetch de la URL de API/feed
-   b. Si `api_provider` está definido, usar su parser; si no está definido, inferir por dominio (`boards-api.greenhouse.io`, `jobs.ashbyhq.com`, `api.lever.co`, `*.bamboohr.com`, `*.recruitee.com`, `*.smartrecruiters.com` (incluye `jobs.` y `careers.`), `*.teamtailor.com`, `apply.workable.com`, `*.myworkdayjobs.com`)
-   c. Para **Ashby**, enviar POST con:
-      - `operationName: ApiJobBoardWithTeams`
-      - `variables.organizationHostedJobsPageName: {company}`
-      - query GraphQL de `jobBoardWithTeams` + `jobPostings { id title locationName employmentType compensationTierSummary }`
+   b. Si `api_provider` está definido, usar su parser; si no está definido, inferir por dominio (`boards-api.greenhouse.io`, `api.ashbyhq.com` / `jobs.ashbyhq.com`, `api.lever.co`, `*.bamboohr.com`, `*.recruitee.com`, `*.smartrecruiters.com` (incluye `jobs.` y `careers.`), `*.teamtailor.com`, `apply.workable.com`, `*.myworkdayjobs.com`)
+   c. Para **Ashby**, hacer GET al posting-api REST (`https://api.ashbyhq.com/posting-api/job-board/{company}?includeCompensation=true`) y leer `jobs[]`. El slug `{company}` es el que aparece en `jobs.ashbyhq.com/{slug}`.
    d. Para **BambooHR**, la lista solo trae metadatos básicos. Para cada item relevante, leer `id`, hacer GET a `https://{company}.bamboohr.com/careers/{id}/detail`, y extraer el JD completo desde `result.jobOpening`. Usar `jobOpeningShareUrl` como URL pública si viene; si no, usar la URL de detalle.
    e. Para **Recruitee**, filtrar `offers[]` por `status === 'published'` y usar `careers_url` directamente.
    f. Para **SmartRecruiters**, leer `content[]` y construir la URL pública como `https://jobs.smartrecruiters.com/{company.identifier}/{id}`.
@@ -225,7 +222,7 @@ Fallback: si solo tienes la URL ATS directa, navega primero al sitio web de la e
 - **Custom:** La URL propia de la empresa (ej: `https://openai.com/careers`)
 
 **Patrones de API/feed por plataforma:**
-- **Ashby API:** `https://jobs.ashbyhq.com/api/non-user-graphql?op=ApiJobBoardWithTeams`
+- **Ashby API:** `https://api.ashbyhq.com/posting-api/job-board/{slug}?includeCompensation=true`
 - **BambooHR API:** lista `https://{company}.bamboohr.com/careers/list`; detalle `https://{company}.bamboohr.com/careers/{id}/detail` (`result.jobOpening`)
 - **Lever API:** `https://api.lever.co/v0/postings/{company}?mode=json`
 - **Recruitee API:** `https://{company}.recruitee.com/api/offers/`
