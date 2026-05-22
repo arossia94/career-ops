@@ -139,8 +139,19 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
    **No interrumpir el scan entero si una URL falla.** Si `browser_navigate` da error (timeout, 403, etc.), marcar como `skipped_expired` y continuar con la siguiente.
 
 8. **Para cada oferta nueva verificada que pase filtros**:
-   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title}`
+   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title} | {location}`
    b. Registrar en `scan-history.tsv`: `{url}\t{date}\t{query_name}\t{title}\t{company}\tadded`
+
+   El campo `{location}` se extrae del JSON devuelto por cada ATS:
+   - **Greenhouse**: `location.name`
+   - **Ashby**: `location` (string del posting-api; equivalente a `address.addressLocality` cuando está disponible)
+   - **Lever**: `categories.location`
+   - **Recruitee**: `location` (o `city` + `country` como fallback; equivalente a `locations[].name` cuando está disponible)
+   - **SmartRecruiters**: `location.fullLocation` (o `location.city` + `region` + `country` como fallback)
+   - **Workable**: `city` + `state` + `country` unidos por coma
+   - **Workday**: `locationsText`
+
+   Si el ATS no expone ubicación, el campo queda vacío y la línea termina en ` | `.
 
 9. **Ofertas filtradas por título**: registrar en `scan-history.tsv` con status `skipped_title`
 10. **Ofertas duplicadas**: registrar con status `skipped_dup`
