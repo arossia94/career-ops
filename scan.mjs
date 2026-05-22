@@ -374,11 +374,18 @@ function appendToPipeline(offers) {
 }
 
 function appendToScanHistory(offers, date) {
-  // Ensure file + header exist. Location appended as 7th column for non-breaking
-  // backward compat — older scan-history.tsv files with 6 columns still parse fine
-  // since loadSeenUrls only reads column 0.
+  const HEADER_V2 = 'url\tfirst_seen\tportal\ttitle\tcompany\tstatus\tlocation\n';
+  const HEADER_V1 = 'url\tfirst_seen\tportal\ttitle\tcompany\tstatus\n';
+
   if (!existsSync(SCAN_HISTORY_PATH)) {
-    writeFileSync(SCAN_HISTORY_PATH, 'url\tfirst_seen\tportal\ttitle\tcompany\tstatus\tlocation\n', 'utf-8');
+    writeFileSync(SCAN_HISTORY_PATH, HEADER_V2, 'utf-8');
+  } else {
+    // Migrate v1 (6-col) header in place so any header-based parser stays aligned
+    // with the 7-col rows we're about to append. Idempotent — no-op once migrated.
+    const contents = readFileSync(SCAN_HISTORY_PATH, 'utf-8');
+    if (contents.startsWith(HEADER_V1)) {
+      writeFileSync(SCAN_HISTORY_PATH, HEADER_V2 + contents.slice(HEADER_V1.length), 'utf-8');
+    }
   }
 
   const lines = offers.map(o =>
