@@ -13,6 +13,7 @@
  *   node scan.mjs                  # scan all enabled companies
  *   node scan.mjs --dry-run        # preview without writing files
  *   node scan.mjs --company Cohere # scan a single company
+ *   node scan.mjs --verbose        # also print each skipped duplicate + its source
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs';
@@ -294,14 +295,15 @@ function buildLocationFilter(locationFilter) {
 // ── Dedup ───────────────────────────────────────────────────────────
 
 function loadSeenUrls() {
-  const seen = new Set();
+  // url -> source label (first writer wins)
+  const seen = new Map();
+  const add = (url, source) => { if (url && !seen.has(url)) seen.set(url, source); };
 
   // scan-history.tsv
   if (existsSync(SCAN_HISTORY_PATH)) {
     const lines = readFileSync(SCAN_HISTORY_PATH, 'utf-8').split('\n');
     for (const line of lines.slice(1)) { // skip header
-      const url = line.split('\t')[0];
-      if (url) seen.add(url);
+      add(line.split('\t')[0], 'scan-history.tsv');
     }
   }
 
@@ -309,7 +311,7 @@ function loadSeenUrls() {
   if (existsSync(PIPELINE_PATH)) {
     const text = readFileSync(PIPELINE_PATH, 'utf-8');
     for (const match of text.matchAll(/- \[[ x]\] (https?:\/\/\S+)/g)) {
-      seen.add(match[1]);
+      add(match[1], 'pipeline.md');
     }
   }
 
@@ -317,7 +319,7 @@ function loadSeenUrls() {
   if (existsSync(APPLICATIONS_PATH)) {
     const text = readFileSync(APPLICATIONS_PATH, 'utf-8');
     for (const match of text.matchAll(/https?:\/\/[^\s|)]+/g)) {
-      seen.add(match[0]);
+      add(match[0], 'applications.md');
     }
   }
 
@@ -325,7 +327,8 @@ function loadSeenUrls() {
 }
 
 function loadSeenCompanyRoles() {
-  const seen = new Set();
+  // key -> source label
+  const seen = new Map();
   if (existsSync(APPLICATIONS_PATH)) {
     const text = readFileSync(APPLICATIONS_PATH, 'utf-8');
     // Parse markdown table rows: | # | Date | Company | Role | ...
@@ -333,7 +336,8 @@ function loadSeenCompanyRoles() {
       const company = match[1].trim().toLowerCase();
       const role = match[2].trim().toLowerCase();
       if (company && role && company !== 'company') {
-        seen.add(`${company}::${role}`);
+        const key = `${company}::${role}`;
+        if (!seen.has(key)) seen.set(key, 'applications.md');
       }
     }
   }
@@ -418,6 +422,7 @@ async function parallelFetch(tasks, limit) {
 async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
+  const verbose = args.includes('--verbose');
   const companyFlag = args.indexOf('--company');
   const filterCompany = companyFlag !== -1 ? args[companyFlag + 1]?.toLowerCase() : null;
 
@@ -475,16 +480,22 @@ async function main() {
         }
         if (seenUrls.has(job.url)) {
           totalDupes++;
+          if (verbose) {
+            console.log(`  dup [url ← ${seenUrls.get(job.url)}] ${job.company} — ${job.title} :: ${job.url}`);
+          }
           continue;
         }
         const key = `${job.company.toLowerCase()}::${job.title.toLowerCase()}`;
         if (seenCompanyRoles.has(key)) {
           totalDupes++;
+          if (verbose) {
+            console.log(`  dup [company+role ← ${seenCompanyRoles.get(key)}] ${job.company} — ${job.title} :: ${job.url}`);
+          }
           continue;
         }
         // Mark as seen to avoid intra-scan dupes
-        seenUrls.add(job.url);
-        seenCompanyRoles.add(key);
+        seenUrls.set(job.url, '(this scan)');
+        seenCompanyRoles.set(key, '(this scan)');
         newOffers.push({ ...job, source: `${type}-api` });
       }
     } catch (err) {
