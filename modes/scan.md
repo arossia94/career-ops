@@ -139,7 +139,7 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
    **No interrumpir el scan entero si una URL falla.** Si `browser_navigate` da error (timeout, 403, etc.), marcar como `skipped_expired` y continuar con la siguiente.
 
 8. **Para cada oferta nueva verificada que pase filtros**:
-   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title} | {location}`
+   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title} | {location} | {published}`
    b. Registrar en `scan-history.tsv`: `{url}\t{date}\t{query_name}\t{title}\t{company}\tadded`
 
    El campo `{location}` se extrae del JSON devuelto por cada ATS:
@@ -151,7 +151,15 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
    - **Workable**: `city` + `state` + `country` unidos por coma
    - **Workday**: `locationsText`
 
-   Si el ATS no expone ubicación, el campo queda vacío y la línea termina en ` | `.
+   El campo `{published}` es la fecha de publicación normalizada a `YYYY-MM-DD`:
+   - **Greenhouse**: `first_published`
+   - **Ashby**: `publishedAt`
+   - **Recruitee**: `published_at`
+   - **SmartRecruiters**: `releasedDate`
+   - **Workable**: `published_on`
+   - **Lever / Workday**: no expuesto — el campo queda vacío.
+
+   Si el ATS no expone ubicación o fecha, el campo queda vacío y la línea conserva el separador ` | ` correspondiente.
 
 9. **Ofertas filtradas por título**: registrar en `scan-history.tsv` con status `skipped_title`
 10. **Ofertas duplicadas**: registrar con status `skipped_dup`

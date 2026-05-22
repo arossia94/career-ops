@@ -112,6 +112,16 @@ function detectApi(company) {
 
 // ── API parsers ─────────────────────────────────────────────────────
 
+// Normalize an ATS-supplied timestamp to YYYY-MM-DD. The five supported
+// formats ("2026-03-19T16:43:44-04:00", "2026-05-20 23:53:29 UTC",
+// "2026-05-21T18:00:01.100Z", "2026-05-21", etc.) all begin with the
+// ISO date, so a 10-char slice is enough.
+function formatPublished(raw) {
+  if (!raw || typeof raw !== 'string') return '';
+  const slice = raw.slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(slice) ? slice : '';
+}
+
 function parseGreenhouse(json, companyName) {
   const jobs = json.jobs || [];
   return jobs.map(j => ({
@@ -119,6 +129,7 @@ function parseGreenhouse(json, companyName) {
     url: j.absolute_url || '',
     company: companyName,
     location: j.location?.name || '',
+    published: formatPublished(j.first_published),
   }));
 }
 
@@ -129,6 +140,7 @@ function parseAshby(json, companyName) {
     url: j.jobUrl || '',
     company: companyName,
     location: j.location || '',
+    published: formatPublished(j.publishedAt),
   }));
 }
 
@@ -139,6 +151,7 @@ function parseLever(json, companyName) {
     url: j.hostedUrl || '',
     company: companyName,
     location: j.categories?.location || '',
+    published: '',
   }));
 }
 
@@ -151,6 +164,7 @@ function parseRecruitee(json, companyName) {
       url: o.careers_url || '',
       company: companyName,
       location: o.location || [o.city, o.country].filter(Boolean).join(', '),
+      published: formatPublished(o.published_at),
     }));
 }
 
@@ -164,6 +178,7 @@ function parseSmartRecruiters(json, companyName) {
     company: companyName,
     location: p.location?.fullLocation
       || [p.location?.city, p.location?.region, p.location?.country].filter(Boolean).join(', '),
+    published: formatPublished(p.releasedDate),
   }));
 }
 
@@ -174,6 +189,7 @@ function parseWorkable(json, companyName) {
     url: j.shortlink || j.url || '',
     company: companyName,
     location: [j.city, j.state, j.country].filter(Boolean).join(', '),
+    published: formatPublished(j.published_on),
   }));
 }
 
@@ -184,6 +200,7 @@ function parseWorkday(json, companyName, api) {
     url: j.externalPath ? `${api.siteBase}${j.externalPath}` : '',
     company: companyName,
     location: j.locationsText || '',
+    published: '',
   }));
 }
 
@@ -315,7 +332,7 @@ function appendToPipeline(offers) {
     const procIdx = text.indexOf('## Procesadas');
     const insertAt = procIdx === -1 ? text.length : procIdx;
     const block = `\n${marker}\n\n` + offers.map(o =>
-      `- [ ] ${o.url} | ${o.company} | ${o.title} | ${o.location || ''}`
+      `- [ ] ${o.url} | ${o.company} | ${o.title} | ${o.location || ''} | ${o.published || ''}`
     ).join('\n') + '\n\n';
     text = text.slice(0, insertAt) + block + text.slice(insertAt);
   } else {
@@ -325,7 +342,7 @@ function appendToPipeline(offers) {
     const insertAt = nextSection === -1 ? text.length : nextSection;
 
     const block = '\n' + offers.map(o =>
-      `- [ ] ${o.url} | ${o.company} | ${o.title} | ${o.location || ''}`
+      `- [ ] ${o.url} | ${o.company} | ${o.title} | ${o.location || ''} | ${o.published || ''}`
     ).join('\n') + '\n';
     text = text.slice(0, insertAt) + block + text.slice(insertAt);
   }
