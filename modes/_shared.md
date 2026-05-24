@@ -30,14 +30,12 @@ The evaluation uses 6 blocks (A-F) with a global score of 0-100:
 
 | Dimension | What it measures |
 |-----------|-----------------|
-| Match con CV | Skills, experience, proof points alignment |
+| CV match | Skills, experience, proof points alignment |
 | North Star alignment | How well the role fits the user's target archetypes (from _profile.md) |
 | Comp | Salary vs market (5=top quartile, 1=well below) |
 | Cultural signals | Company culture, growth, stability, remote policy |
 | Red flags | Blockers, warnings (negative adjustments) |
 | **Global** | Weighted average of above |
-
-If the CV misses any of the minimum requirements in the job description, cap the maximum global score at 50.0 since it will be filtered out via ATS almost certainly. Communicate this penalty to the user and say which minimum requirements are missing.
 
 **Score interpretation:**
 - 90.0+ → Strong match, recommend applying immediately

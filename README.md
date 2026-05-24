@@ -219,7 +219,7 @@ The scanner comes with **45+ companies** ready to scan and **19 search queries**
 
 ## Job Offer evaluation system
 
-The AI agent evaluates the job offer against the CV according to the guidelines given in career-ops/modes/ofertas.md.
+The AI agent evaluates the job offer against the CV according to the guidelines given in `career-ops/modes/ofertas.md.`
 
 These guidelines are two-pronged: a scoring matrix supplemented with additional instructions.
 
@@ -239,10 +239,15 @@ First, there is a 10-dimensional weighted scoring matrix that evaluates the qual
 
 The weights were chosen according to the preferences of the authors and must not be taken as a fixed or even recommended setting. We encourage the users to change the weights according to their preferences and even play with the criteria defined inside the matrix. This can be easily done by editing career-ops/modes/ofertas.md.
 
+The final socre is in a linear scale from 0 (worst) to 100 (best).
+
 ### Additional instructions
 
-The file 
+The file `career-ops/modes/ofertas.md` includes additional instructions based on our knowledge of typical ATS systems used by recruitrers. These instructions are:
+- **Minimum Requirements failure**: If the CV doesn't explicitly meet the minimum requirements in the job description, it is expected that it will be automatically discarded by the recruiting systems. Hence, in this case, the total score will be capped at 50.
+- **Missing keywords**: If the job description has explicity keywords, the total score will be reduced by 5 points for each keyword missing from the CV.
 
+We encourage the user to remove, modify, and edit these instructions according to their personal case and preferences.
 
 ## Dashboard TUI
 

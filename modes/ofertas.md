@@ -17,7 +17,9 @@
 
 If there are keywords in the job description, discount 5 points from the total score for each keyword missing from the CV.
 
-Para cada oferta: score en cada dimensión, score ponderado total. Todos los scores deberían ser transformados linealmente a una escala de 0 a 100.
-Ranking final + recomendación con consideraciones de time-to-offer.
+If the CV misses any of the minimum requirements in the job description, cap the maximum global score at 50.0 since it will be filtered out via ATS almost certainly. Communicate this penalty to the user and say which minimum requirements are missing.
 
-Pedir al usuario las ofertas si no están en contexto. Puede ser texto, URLs, o referencias a ofertas ya evaluadas en el tracker.
+For each job offer: score in each dimension. All scores should be reported in linear scale from 0 (worst score) to 100 (perfect score).
+Inform the final Ranking final and a recommendation considering the time-to-offer factor.
+
+Ask the user the offer if they are not in the contexts. It could be the text of the job offer, URLs or references to a previously evaluated offer found in the tracker.
