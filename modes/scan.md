@@ -2,7 +2,7 @@
 
 Escanea portales de empleo configurados, filtra por relevancia de título, y añade nuevas ofertas al pipeline para evaluación posterior.
 
-> **Nota (v1.5+):** El escáner por defecto (`scan.mjs` / `npm run scan`) es **zero-token** y sólo consulta directamente las APIs públicas de Greenhouse, Ashby y Lever. Los niveles con Playwright/WebSearch descritos abajo son el flujo **agente** (ejecutado por Claude/Codex), no lo que hace `scan.mjs`. Si una empresa no tiene API Greenhouse/Ashby/Lever, `scan.mjs` la ignorará; para esos casos, el agente debe completar manualmente el Nivel 1 (Playwright) o Nivel 3 (WebSearch).
+> **Nota (v1.5+):** El escáner por defecto (`scan.mjs` / `npm run scan`) es **zero-token** y sólo consulta directamente las APIs públicas de Greenhouse, Ashby, Lever, Recruitee, SmartRecruiters, Workable y Workday. Los niveles con Playwright/WebSearch descritos abajo son el flujo **agente** (ejecutado por Claude/Codex), no lo que hace `scan.mjs`. Si una empresa no tiene API soportada, `scan.mjs` la ignorará; para esos casos, el agente debe completar manualmente el Nivel 1 (Playwright) o Nivel 3 (WebSearch).
 
 ## Ejecución recomendada
 
@@ -41,19 +41,25 @@ Para empresas con API pública o feed estructurado, usar la respuesta JSON/XML c
 
 **Soporte actual (variables entre `{}`):**
 - **Greenhouse**: `https://boards-api.greenhouse.io/v1/boards/{company}/jobs`
-- **Ashby**: `https://jobs.ashbyhq.com/api/non-user-graphql?op=ApiJobBoardWithTeams`
+- **Ashby**: `https://api.ashbyhq.com/posting-api/job-board/{company}?includeCompensation=true`
 - **BambooHR**: lista `https://{company}.bamboohr.com/careers/list`; detalle de una oferta `https://{company}.bamboohr.com/careers/{id}/detail`
 - **Lever**: `https://api.lever.co/v0/postings/{company}?mode=json`
+- **Recruitee**: `https://{company}.recruitee.com/api/offers/`
+- **SmartRecruiters**: `https://api.smartrecruiters.com/v1/companies/{company}/postings?limit=100`
 - **Teamtailor**: `https://{company}.teamtailor.com/jobs.rss`
-- **Workday**: `https://{company}.{shard}.myworkdayjobs.com/wday/cxs/{company}/{site}/jobs`
+- **Workable**: `https://apply.workable.com/api/v1/widget/accounts/{account}`
+- **Workday**: `https://{tenant}.{shard}.myworkdayjobs.com/wday/cxs/{tenant}/{site}/jobs` (POST + paginación)
 
 **Convención de parsing por provider:**
 - `greenhouse`: `jobs[]` → `title`, `absolute_url`
-- `ashby`: GraphQL `ApiJobBoardWithTeams` con `organizationHostedJobsPageName={company}` → `jobBoard.jobPostings[]` (`title`, `id`; construir URL pública si no viene en payload)
+- `ashby`: REST posting-api (`api.ashbyhq.com/posting-api/job-board/{company}?includeCompensation=true`) → `jobs[]` (`title`, `jobUrl`, `location`)
 - `bamboohr`: lista `result[]` → `jobOpeningName`, `id`; construir URL de detalle `https://{company}.bamboohr.com/careers/{id}/detail`; para leer el JD completo, hacer GET del detalle y usar `result.jobOpening` (`jobOpeningName`, `description`, `datePosted`, `minimumExperience`, `compensation`, `jobOpeningShareUrl`)
 - `lever`: array raíz `[]` → `text`, `hostedUrl` (fallback: `applyUrl`)
+- `recruitee`: `offers[]` filtrado por `status === 'published'` → `title`, `careers_url`, `location` (o `city`+`country`)
+- `smartrecruiters`: `content[]` → `name`, `id` + `company.identifier` para construir `https://jobs.smartrecruiters.com/{identifier}/{id}`; `location.fullLocation` o `city`/`region`/`country`
 - `teamtailor`: RSS items → `title`, `link`
-- `workday`: `jobPostings[]`/`jobPostings` (según tenant) → `title`, `externalPath` o URL construida desde el host
+- `workable`: `jobs[]` → `title`, `shortlink` (fallback: `url`), `city`/`state`/`country`
+- `workday`: POST JSON `{limit, offset, searchText: "", appliedFacets: {}}` paginando de 20 en 20; `jobPostings[]` → `title`, `externalPath` (concatenado con `siteBase` = `https://{tenant}.{shard}.myworkdayjobs.com/{site}`), `locationsText`. El campo `total` solo viene en la primera respuesta — fijarlo una vez y detenerse también cuando la página devuelva menos de `limit` resultados.
 
 ### Nivel 3 — WebSearch queries (DESCUBRIMIENTO AMPLIO)
 
@@ -85,15 +91,15 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
 5. **Nivel 2 — ATS APIs / feeds** (paralelo):
    Para cada empresa en `tracked_companies` con `api:` definida y `enabled: true`:
    a. WebFetch de la URL de API/feed
-   b. Si `api_provider` está definido, usar su parser; si no está definido, inferir por dominio (`boards-api.greenhouse.io`, `jobs.ashbyhq.com`, `api.lever.co`, `*.bamboohr.com`, `*.teamtailor.com`, `*.myworkdayjobs.com`)
-   c. Para **Ashby**, enviar POST con:
-      - `operationName: ApiJobBoardWithTeams`
-      - `variables.organizationHostedJobsPageName: {company}`
-      - query GraphQL de `jobBoardWithTeams` + `jobPostings { id title locationName employmentType compensationTierSummary }`
+   b. Si `api_provider` está definido, usar su parser; si no está definido, inferir por dominio (`boards-api.greenhouse.io`, `api.ashbyhq.com` / `jobs.ashbyhq.com`, `api.lever.co`, `*.bamboohr.com`, `*.recruitee.com`, `*.smartrecruiters.com` (incluye `jobs.` y `careers.`), `*.teamtailor.com`, `apply.workable.com`, `*.myworkdayjobs.com`)
+   c. Para **Ashby**, hacer GET al posting-api REST (`https://api.ashbyhq.com/posting-api/job-board/{company}?includeCompensation=true`) y leer `jobs[]`. El slug `{company}` es el que aparece en `jobs.ashbyhq.com/{slug}`.
    d. Para **BambooHR**, la lista solo trae metadatos básicos. Para cada item relevante, leer `id`, hacer GET a `https://{company}.bamboohr.com/careers/{id}/detail`, y extraer el JD completo desde `result.jobOpening`. Usar `jobOpeningShareUrl` como URL pública si viene; si no, usar la URL de detalle.
-   e. Para **Workday**, enviar POST JSON con al menos `{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}` y paginar por `offset` hasta agotar resultados
-   f. Para cada job extraer y normalizar: `{title, url, company}`
-   g. Acumular en lista de candidatos (dedup con Nivel 1)
+   e. Para **Recruitee**, filtrar `offers[]` por `status === 'published'` y usar `careers_url` directamente.
+   f. Para **SmartRecruiters**, leer `content[]` y construir la URL pública como `https://jobs.smartrecruiters.com/{company.identifier}/{id}`.
+   g. Para **Workable**, leer `jobs[]` y usar `shortlink` (con fallback a `url`).
+   h. Para **Workday**, enviar POST JSON `{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}` y paginar por `offset` en bloques de 20. El campo `total` solo viene en la primera respuesta — fijarlo entonces y detenerse también si una página devuelve menos de `limit` items. Construir la URL final como `siteBase + externalPath`, donde `siteBase = https://{tenant}.{shard}.myworkdayjobs.com/{site}`.
+   i. Para cada job extraer y normalizar: `{title, url, company}`
+   j. Acumular en lista de candidatos (dedup con Nivel 1)
 
 6. **Nivel 3 — WebSearch queries** (paralelo si posible):
    Para cada query en `search_queries` con `enabled: true`:
@@ -108,6 +114,15 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
    - Al menos 1 keyword de `positive` debe aparecer en el título (case-insensitive)
    - 0 keywords de `negative` deben aparecer
    - `seniority_boost` keywords dan prioridad pero no son obligatorios
+
+6b. **Filtrar por ubicación (opcional)** usando `location_filter` de `portals.yml`:
+   - Si el bloque `location_filter` está ausente, todas las ubicaciones pasan (comportamiento por defecto)
+   - Ubicación vacía en una oferta → pasa (no penalizar datos faltantes)
+   - Cualquier keyword de `block` presente → rechazar (precedencia sobre allow)
+   - `allow` vacío → pasa (ya superó block)
+   - `allow` no vacío → debe coincidir al menos una keyword
+   - Todas las coincidencias son case-insensitive substring
+   - La ubicación se persiste como 7ª columna en `scan-history.tsv` para auditoría posterior
 
 7. **Deduplicar** contra 3 fuentes:
    - `scan-history.tsv` → URL exacta ya vista
@@ -133,8 +148,27 @@ Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y dedu
    **No interrumpir el scan entero si una URL falla.** Si `browser_navigate` da error (timeout, 403, etc.), marcar como `skipped_expired` y continuar con la siguiente.
 
 8. **Para cada oferta nueva verificada que pase filtros**:
-   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title}`
+   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title} | {location} | {published}`
    b. Registrar en `scan-history.tsv`: `{url}\t{date}\t{query_name}\t{title}\t{company}\tadded`
+
+   El campo `{location}` se extrae del JSON devuelto por cada ATS:
+   - **Greenhouse**: `location.name`
+   - **Ashby**: `location` (string del posting-api; equivalente a `address.addressLocality` cuando está disponible)
+   - **Lever**: `categories.location`
+   - **Recruitee**: `location` (o `city` + `country` como fallback; equivalente a `locations[].name` cuando está disponible)
+   - **SmartRecruiters**: `location.fullLocation` (o `location.city` + `region` + `country` como fallback)
+   - **Workable**: `city` + `state` + `country` unidos por coma
+   - **Workday**: `locationsText`
+
+   El campo `{published}` es la fecha de publicación normalizada a `YYYY-MM-DD`:
+   - **Greenhouse**: `first_published`
+   - **Ashby**: `publishedAt`
+   - **Recruitee**: `published_at`
+   - **SmartRecruiters**: `releasedDate`
+   - **Workable**: `published_on`
+   - **Lever / Workday**: no expuesto — el campo queda vacío.
+
+   Si el ATS no expone ubicación o fecha, el campo queda vacío y la línea conserva el separador ` | ` correspondiente.
 
 9. **Ofertas filtradas por título**: registrar en `scan-history.tsv` con status `skipped_title`
 10. **Ofertas duplicadas**: registrar con status `skipped_dup`
@@ -208,16 +242,22 @@ Fallback: si solo tienes la URL ATS directa, navega primero al sitio web de la e
 - **Greenhouse:** `https://job-boards.greenhouse.io/{slug}` o `https://job-boards.eu.greenhouse.io/{slug}`
 - **Lever:** `https://jobs.lever.co/{slug}`
 - **BambooHR:** lista `https://{company}.bamboohr.com/careers/list`; detalle `https://{company}.bamboohr.com/careers/{id}/detail`
+- **Recruitee:** `https://{company}.recruitee.com`
+- **SmartRecruiters:** `https://jobs.smartrecruiters.com/{CompanyId}` o `https://careers.smartrecruiters.com/{CompanyId}`
 - **Teamtailor:** `https://{company}.teamtailor.com/jobs`
-- **Workday:** `https://{company}.{shard}.myworkdayjobs.com/{site}`
+- **Workable:** `https://apply.workable.com/{account}`
+- **Workday:** `https://{tenant}.{shard}.myworkdayjobs.com/[{lang}/]{site}` (`{lang}` opcional, p. ej. `en-US`)
 - **Custom:** La URL propia de la empresa (ej: `https://openai.com/careers`)
 
 **Patrones de API/feed por plataforma:**
-- **Ashby API:** `https://jobs.ashbyhq.com/api/non-user-graphql?op=ApiJobBoardWithTeams`
+- **Ashby API:** `https://api.ashbyhq.com/posting-api/job-board/{slug}?includeCompensation=true`
 - **BambooHR API:** lista `https://{company}.bamboohr.com/careers/list`; detalle `https://{company}.bamboohr.com/careers/{id}/detail` (`result.jobOpening`)
 - **Lever API:** `https://api.lever.co/v0/postings/{company}?mode=json`
+- **Recruitee API:** `https://{company}.recruitee.com/api/offers/`
+- **SmartRecruiters API:** `https://api.smartrecruiters.com/v1/companies/{CompanyId}/postings?limit=100`
 - **Teamtailor RSS:** `https://{company}.teamtailor.com/jobs.rss`
-- **Workday API:** `https://{company}.{shard}.myworkdayjobs.com/wday/cxs/{company}/{site}/jobs`
+- **Workable API:** `https://apply.workable.com/api/v1/widget/accounts/{account}`
+- **Workday API:** `https://{tenant}.{shard}.myworkdayjobs.com/wday/cxs/{tenant}/{site}/jobs` (POST con paginación; ver Nivel 2 paso h)
 
 **Si `careers_url` no existe** para una empresa:
 1. Intentar el patrón de su plataforma conocida

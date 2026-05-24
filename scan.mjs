@@ -13,6 +13,7 @@
  *   node scan.mjs                  # scan all enabled companies
  *   node scan.mjs --dry-run        # preview without writing files
  *   node scan.mjs --company Cohere # scan a single company
+ *   node scan.mjs --verbose        # also print each skipped duplicate + its source
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs';
@@ -112,6 +113,16 @@ function detectApi(company) {
 
 // ── API parsers ─────────────────────────────────────────────────────
 
+// Normalize an ATS-supplied timestamp to YYYY-MM-DD. The five supported
+// formats ("2026-03-19T16:43:44-04:00", "2026-05-20 23:53:29 UTC",
+// "2026-05-21T18:00:01.100Z", "2026-05-21", etc.) all begin with the
+// ISO date, so a 10-char slice is enough.
+function formatPublished(raw) {
+  if (!raw || typeof raw !== 'string') return '';
+  const slice = raw.slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(slice) ? slice : '';
+}
+
 function parseGreenhouse(json, companyName) {
   const jobs = json.jobs || [];
   return jobs.map(j => ({
@@ -119,6 +130,7 @@ function parseGreenhouse(json, companyName) {
     url: j.absolute_url || '',
     company: companyName,
     location: j.location?.name || '',
+    published: formatPublished(j.first_published),
   }));
 }
 
@@ -129,6 +141,7 @@ function parseAshby(json, companyName) {
     url: j.jobUrl || '',
     company: companyName,
     location: j.location || '',
+    published: formatPublished(j.publishedAt),
   }));
 }
 
@@ -139,6 +152,7 @@ function parseLever(json, companyName) {
     url: j.hostedUrl || '',
     company: companyName,
     location: j.categories?.location || '',
+    published: '',
   }));
 }
 
@@ -151,6 +165,7 @@ function parseRecruitee(json, companyName) {
       url: o.careers_url || '',
       company: companyName,
       location: o.location || [o.city, o.country].filter(Boolean).join(', '),
+      published: formatPublished(o.published_at),
     }));
 }
 
@@ -164,6 +179,7 @@ function parseSmartRecruiters(json, companyName) {
     company: companyName,
     location: p.location?.fullLocation
       || [p.location?.city, p.location?.region, p.location?.country].filter(Boolean).join(', '),
+    published: formatPublished(p.releasedDate),
   }));
 }
 
@@ -174,6 +190,7 @@ function parseWorkable(json, companyName) {
     url: j.shortlink || j.url || '',
     company: companyName,
     location: [j.city, j.state, j.country].filter(Boolean).join(', '),
+    published: formatPublished(j.published_on),
   }));
 }
 
@@ -184,6 +201,7 @@ function parseWorkday(json, companyName, api) {
     url: j.externalPath ? `${api.siteBase}${j.externalPath}` : '',
     company: companyName,
     location: j.locationsText || '',
+    published: '',
   }));
 }
 
@@ -250,18 +268,42 @@ function buildTitleFilter(titleFilter) {
     return hasPositive && !hasNegative;
   };
 }
+// ── Location filter ─────────────────────────────────────────────────
+// Optional. If `location_filter` is absent from portals.yml, all locations pass.
+// Semantics:
+//   - Empty location string → pass (don't penalize missing data)
+//   - `block` matches → reject (takes precedence over allow)
+//   - `allow` empty → pass (already cleared block)
+//   - `allow` non-empty → must match at least one keyword
+// All matches are case-insensitive substring.
+
+function buildLocationFilter(locationFilter) {
+  if (!locationFilter) return () => true;
+  const allow = (locationFilter.allow || []).map(k => k.toLowerCase());
+  const block = (locationFilter.block || []).map(k => k.toLowerCase());
+
+  return (location) => {
+    if (!location) return true;
+    const lower = location.toLowerCase();
+    if (block.length > 0 && block.some(k => lower.includes(k))) return false;
+    if (allow.length === 0) return true;
+    return allow.some(k => lower.includes(k));
+  };
+}
+
 
 // ── Dedup ───────────────────────────────────────────────────────────
 
 function loadSeenUrls() {
-  const seen = new Set();
+  // url -> source label (first writer wins)
+  const seen = new Map();
+  const add = (url, source) => { if (url && !seen.has(url)) seen.set(url, source); };
 
   // scan-history.tsv
   if (existsSync(SCAN_HISTORY_PATH)) {
     const lines = readFileSync(SCAN_HISTORY_PATH, 'utf-8').split('\n');
     for (const line of lines.slice(1)) { // skip header
-      const url = line.split('\t')[0];
-      if (url) seen.add(url);
+      add(line.split('\t')[0], 'scan-history.tsv');
     }
   }
 
@@ -269,7 +311,7 @@ function loadSeenUrls() {
   if (existsSync(PIPELINE_PATH)) {
     const text = readFileSync(PIPELINE_PATH, 'utf-8');
     for (const match of text.matchAll(/- \[[ x]\] (https?:\/\/\S+)/g)) {
-      seen.add(match[1]);
+      add(match[1], 'pipeline.md');
     }
   }
 
@@ -277,7 +319,7 @@ function loadSeenUrls() {
   if (existsSync(APPLICATIONS_PATH)) {
     const text = readFileSync(APPLICATIONS_PATH, 'utf-8');
     for (const match of text.matchAll(/https?:\/\/[^\s|)]+/g)) {
-      seen.add(match[0]);
+      add(match[0], 'applications.md');
     }
   }
 
@@ -285,7 +327,8 @@ function loadSeenUrls() {
 }
 
 function loadSeenCompanyRoles() {
-  const seen = new Set();
+  // key -> source label
+  const seen = new Map();
   if (existsSync(APPLICATIONS_PATH)) {
     const text = readFileSync(APPLICATIONS_PATH, 'utf-8');
     // Parse markdown table rows: | # | Date | Company | Role | ...
@@ -293,7 +336,8 @@ function loadSeenCompanyRoles() {
       const company = match[1].trim().toLowerCase();
       const role = match[2].trim().toLowerCase();
       if (company && role && company !== 'company') {
-        seen.add(`${company}::${role}`);
+        const key = `${company}::${role}`;
+        if (!seen.has(key)) seen.set(key, 'applications.md');
       }
     }
   }
@@ -315,7 +359,7 @@ function appendToPipeline(offers) {
     const procIdx = text.indexOf('## Procesadas');
     const insertAt = procIdx === -1 ? text.length : procIdx;
     const block = `\n${marker}\n\n` + offers.map(o =>
-      `- [ ] ${o.url} | ${o.company} | ${o.title}`
+      `- [ ] ${o.url} | ${o.company} | ${o.title} | ${o.location || ''} | ${o.published || ''}`
     ).join('\n') + '\n\n';
     text = text.slice(0, insertAt) + block + text.slice(insertAt);
   } else {
@@ -325,7 +369,7 @@ function appendToPipeline(offers) {
     const insertAt = nextSection === -1 ? text.length : nextSection;
 
     const block = '\n' + offers.map(o =>
-      `- [ ] ${o.url} | ${o.company} | ${o.title}`
+      `- [ ] ${o.url} | ${o.company} | ${o.title} | ${o.location || ''} | ${o.published || ''}`
     ).join('\n') + '\n';
     text = text.slice(0, insertAt) + block + text.slice(insertAt);
   }
@@ -334,13 +378,22 @@ function appendToPipeline(offers) {
 }
 
 function appendToScanHistory(offers, date) {
-  // Ensure file + header exist
+  const HEADER_V2 = 'url\tfirst_seen\tportal\ttitle\tcompany\tstatus\tlocation\n';
+  const HEADER_V1 = 'url\tfirst_seen\tportal\ttitle\tcompany\tstatus\n';
+
   if (!existsSync(SCAN_HISTORY_PATH)) {
-    writeFileSync(SCAN_HISTORY_PATH, 'url\tfirst_seen\tportal\ttitle\tcompany\tstatus\n', 'utf-8');
+    writeFileSync(SCAN_HISTORY_PATH, HEADER_V2, 'utf-8');
+  } else {
+    // Migrate v1 (6-col) header in place so any header-based parser stays aligned
+    // with the 7-col rows we're about to append. Idempotent — no-op once migrated.
+    const contents = readFileSync(SCAN_HISTORY_PATH, 'utf-8');
+    if (contents.startsWith(HEADER_V1)) {
+      writeFileSync(SCAN_HISTORY_PATH, HEADER_V2 + contents.slice(HEADER_V1.length), 'utf-8');
+    }
   }
 
   const lines = offers.map(o =>
-    `${o.url}\t${date}\t${o.source}\t${o.title}\t${o.company}\tadded`
+    `${o.url}\t${date}\t${o.source}\t${o.title}\t${o.company}\tadded\t${o.location || ''}`
   ).join('\n') + '\n';
 
   appendFileSync(SCAN_HISTORY_PATH, lines, 'utf-8');
@@ -369,6 +422,7 @@ async function parallelFetch(tasks, limit) {
 async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
+  const verbose = args.includes('--verbose');
   const companyFlag = args.indexOf('--company');
   const filterCompany = companyFlag !== -1 ? args[companyFlag + 1]?.toLowerCase() : null;
 
@@ -381,6 +435,7 @@ async function main() {
   const config = parseYaml(readFileSync(PORTALS_PATH, 'utf-8'));
   const companies = config.tracked_companies || [];
   const titleFilter = buildTitleFilter(config.title_filter);
+  const locationFilter = buildLocationFilter(config.location_filter);
 
   // 2. Filter to enabled companies with detectable APIs
   const targets = companies
@@ -401,7 +456,8 @@ async function main() {
   // 4. Fetch all APIs
   const date = new Date().toISOString().slice(0, 10);
   let totalFound = 0;
-  let totalFiltered = 0;
+  let totalFilteredTitle = 0;
+  let totalFilteredLocation = 0;
   let totalDupes = 0;
   const newOffers = [];
   const errors = [];
@@ -415,21 +471,31 @@ async function main() {
 
       for (const job of jobs) {
         if (!titleFilter(job.title)) {
-          totalFiltered++;
+          totalFilteredTitle++;
+          continue;
+        }
+        if (!locationFilter(job.location)) {
+          totalFilteredLocation++;
           continue;
         }
         if (seenUrls.has(job.url)) {
           totalDupes++;
+          if (verbose) {
+            console.log(`  dup [url ← ${seenUrls.get(job.url)}] ${job.company} — ${job.title} :: ${job.url}`);
+          }
           continue;
         }
         const key = `${job.company.toLowerCase()}::${job.title.toLowerCase()}`;
         if (seenCompanyRoles.has(key)) {
           totalDupes++;
+          if (verbose) {
+            console.log(`  dup [company+role ← ${seenCompanyRoles.get(key)}] ${job.company} — ${job.title} :: ${job.url}`);
+          }
           continue;
         }
         // Mark as seen to avoid intra-scan dupes
-        seenUrls.add(job.url);
-        seenCompanyRoles.add(key);
+        seenUrls.set(job.url, '(this scan)');
+        seenCompanyRoles.set(key, '(this scan)');
         newOffers.push({ ...job, source: `${type}-api` });
       }
     } catch (err) {
@@ -451,7 +517,8 @@ async function main() {
   console.log(`${'━'.repeat(45)}`);
   console.log(`Companies scanned:     ${targets.length}`);
   console.log(`Total jobs found:      ${totalFound}`);
-  console.log(`Filtered by title:     ${totalFiltered} removed`);
+  console.log(`Filtered by title:     ${totalFilteredTitle} removed`);
+  console.log(`Filtered by location:  ${totalFilteredLocation} removed`);
   console.log(`Duplicates:            ${totalDupes} skipped`);
   console.log(`New offers added:      ${newOffers.length}`);
 
