@@ -162,6 +162,41 @@ El scanner viene con **45+ empresas** pre-configuradas y **19 queries** en los p
 
 **Portales de empleo:** Ashby, Greenhouse, Lever, Wellfound, Workable, RemoteFront
 
+## Sistema de Evalauación de ofertas laborales.
+
+El Agente de IA evalúa la oferta laboral respecto al CV de acuerdo a las reglas en `career-ops/modes/ofertas.md.`
+
+Estas reglas tienen dos componentes: una matriz de puntuación suplementada por instrucciones adicionales.
+
+### Matriz de Puntuación
+
+Hay una matriz de puntuación de 10 dimensiones pesadas que evalúa la calidad de la oferta laboral y, sobre todo, la idoneidad del CV. 
+Las 10 dimensiones, junto a los pesos predefinidos son:
+**Alineación**: Cercanía entre el rol ofrecido y el objetivo (20%).
+**Idoneidad del CV**: Cuán bien se ajusta el CV del usuario a lo requerido por la oferta laboral (30%).
+**Senioridad**: Cuán senior es el rol ofrecido, favoreciendo roles más senior (5%).
+**Competitividad**: Competitividad aproximada del candidato para el rol (10%).
+**Oportunidades de crecimiento laboral**: Si el rol ofrece oportunidades de crecimiento dentro de la misma compañía (10%).
+**Trabajo remoto**: Qué nivel de trabajo remoto es permitido (0%).
+**Reputación del empleador**: Mayor puntuación para empresas top (5%).
+**Modernidad tecnológica**: Para evitar trabajar con tecnologías anticuadas (5%).
+**Velocidad del proceso de selección**: Auto explicativo (5%).
+**Señales culturales**: Privilegia ofertas de compañías con una cultura "builder" y evita compañías con mucha burocracia interna (0%).
+
+Los pesos de cada dimensión fueron elegidos de acuerdo a la preferencia de los autores y no deben ser tomados como una recomendación. Alentamos a los usuarios a cambiar estos pesos de acuerdo a sus preferencias, e incluso a jugar con los criterios definidos en la matriz. Todo esto puede ser modificado fácilmente al editar ´career-ops/modes/ofertas.md.´
+
+El puntaje final es en una escala lineal de 0 (peor) a 100 (mejor).
+
+### Instrucciones Adicionales
+
+
+El archivo ´career-ops/modes/ofertas.md´ incluye instrucciones adicionales basadas en nuestro conocimiento de los sistemas ATS típicos utilizados por los reclutadores. Estas instrucciones son:
+
+-**Fallo en requisitos mínimos**: Si el CV no cumple explícitamente con los requisitos mínimos de la descripción del puesto, se espera que los sistemas de reclutamiento lo descarten automáticamente. Por lo tanto, en este caso, el puntaje total quedará limitado a 50.
+-**Palabras clave faltantes**: Si la descripción del puesto tiene palabras clave explícitas, el puntaje total se reducirá en 5 puntos por cada palabra clave ausente en el CV.
+
+Alentamos al usuario a editar estas instrucciones según su caso personal y preferencias.
+
 ## Dashboard TUI
 
 El dashboard integrado en terminal te permite navegar tu pipeline visualmente:
