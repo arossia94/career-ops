@@ -217,6 +217,38 @@ The scanner comes with **45+ companies** ready to scan and **19 search queries**
 
 **Job boards searched:** Ashby, Greenhouse, Lever, Wellfound, Workable, RemoteFront
 
+## Job Offer evaluation system
+
+The AI agent evaluates the job offer against the CV according to the guidelines given in `career-ops/modes/ofertas.md.`
+
+These guidelines are two-pronged: a scoring matrix supplemented with additional instructions.
+
+### Scoring matrix
+
+First, there is a 10-dimensional weighted scoring matrix that evaluates the quality of the job offer and, most importantly, the match of the CV with it. The ten dimension and the default weights are:
+**Alignment**: Closeness between offered and target roles (20%).
+**CV Match**: How well the user's CV matches what the job offer requires (30%).
+**Seniority Level**: How senior the offered role is, the more senior the better (5%).
+**Competitiveness**: Approximate competitiveness of the candidate for the role (10%).
+**Growth Opportunities**: If the role offers growth opportunities within the company (10%).
+**Remote work quality**: How much remote work is allowed (0%).
+**Employer reputation**: Higher score for top employers (5%).
+**Tech Stack Modernity**: To avoid working on legacy technologies (5%).
+**Hiring process speed**: Self explanatory (5%).
+**Cultural signals**: Privilege job offers from companies with a "builder" culture and avoid bureaucratic companies (0%).
+
+The weights were chosen according to the preferences of the authors and must not be taken as a fixed or even recommended setting. We encourage the users to change the weights according to their preferences and even play with the criteria defined inside the matrix. This can be easily done by editing career-ops/modes/ofertas.md.
+
+The final socre is in a linear scale from 0 (worst) to 100 (best).
+
+### Additional instructions
+
+The file `career-ops/modes/ofertas.md` includes additional instructions based on our knowledge of typical ATS systems used by recruitrers. These instructions are:
+- **Minimum Requirements failure**: If the CV doesn't explicitly meet the minimum requirements in the job description, it is expected that it will be automatically discarded by the recruiting systems. Hence, in this case, the total score will be capped at 50.
+- **Missing keywords**: If the job description has explicity keywords, the total score will be reduced by 5 points for each keyword missing from the CV.
+
+We encourage the user to remove, modify, and edit these instructions according to their personal case and preferences.
+
 ## Dashboard TUI
 
 The built-in terminal dashboard lets you browse your pipeline visually:

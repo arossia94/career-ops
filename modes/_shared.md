@@ -26,11 +26,11 @@
 
 ## Scoring System
 
-The evaluation uses 6 blocks (A-F) with a global score of 1-5:
+The evaluation uses 6 blocks (A-F) with a global score of 0-100:
 
 | Dimension | What it measures |
 |-----------|-----------------|
-| Match con CV | Skills, experience, proof points alignment |
+| CV match | Skills, experience, proof points alignment |
 | North Star alignment | How well the role fits the user's target archetypes (from _profile.md) |
 | Comp | Salary vs market (5=top quartile, 1=well below) |
 | Cultural signals | Company culture, growth, stability, remote policy |
@@ -38,10 +38,11 @@ The evaluation uses 6 blocks (A-F) with a global score of 1-5:
 | **Global** | Weighted average of above |
 
 **Score interpretation:**
-- 4.5+ → Strong match, recommend applying immediately
-- 4.0-4.4 → Good match, worth applying
-- 3.5-3.9 → Decent but not ideal, apply only if specific reason
-- Below 3.5 → Recommend against applying (see Ethical Use in AGENTS.md)
+- 90.0+ → Strong match, recommend applying immediately
+- 70.0-89.9 → Good match, worth applying
+- 50.0-69.9 → Decent but not ideal, apply with low hopes and after intensive reframing of CV.
+- Below 50.0 → Recommend against applying (see Ethical Use in AGENTS.md)
+
 
 ## Posting Legitimacy (Block G)
 
