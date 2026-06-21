@@ -28,6 +28,7 @@ portals.yml
 modes/_profile.md
 .update-dismissed
 .update-lock
+interview_prep/story-bank.md
 
 # Secrets (never commit — use .env.example as template)
 .env
