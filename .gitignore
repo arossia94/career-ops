@@ -28,6 +28,7 @@ portals.yml
 modes/_profile.md
 .update-dismissed
 .update-lock
+interview-prep/story-bank.md
 
 # Secrets (never commit — use .env.example as template)
 .env
@@ -47,3 +48,6 @@ bun.lock
 .claude/memory/
 career-dashboard
 package-lock.json
+
+# VS Code local
+.vscode/*
