@@ -79,6 +79,17 @@ function detectApi(company) {
     };
   }
 
+  // Rippling — ats.rippling.com/[{locale}/]{slug}/...
+  // Locale prefixes (en-GB, es-419, pt-BR, …) are optional; the slug is the
+  // segment that is not in xx-XX form.
+  const ripplingMatch = url.match(/ats\.rippling\.com\/(?:[a-z]{2}-[A-Za-z0-9]{2,3}\/)?([^/?#]+)/);
+  if (ripplingMatch) {
+    return {
+      type: 'rippling',
+      url: `https://api.rippling.com/platform/api/ats/v1/board/${ripplingMatch[1]}/jobs`,
+    };
+  }
+
   // Workable — apply.workable.com/{account}
   const workableMatch = url.match(/apply\.workable\.com\/([^/?#]+)/);
   if (workableMatch) {
@@ -183,6 +194,18 @@ function parseSmartRecruiters(json, companyName) {
   }));
 }
 
+function parseRippling(json, companyName) {
+  // Endpoint returns a bare array of jobs. No publish date is exposed.
+  if (!Array.isArray(json)) return [];
+  return json.map(j => ({
+    title: j.name || '',
+    url: j.url || '',
+    company: companyName,
+    location: j.workLocation?.label || '',
+    published: '',
+  }));
+}
+
 function parseWorkable(json, companyName) {
   const jobs = json.jobs || [];
   return jobs.map(j => ({
@@ -210,6 +233,7 @@ const PARSERS = {
   ashby: parseAshby,
   lever: parseLever,
   recruitee: parseRecruitee,
+  rippling: parseRippling,
   smartrecruiters: parseSmartRecruiters,
   workable: parseWorkable,
   workday: parseWorkday,
