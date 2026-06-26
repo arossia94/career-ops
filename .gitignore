@@ -29,6 +29,9 @@ modes/_profile.md
 .update-dismissed
 .update-lock
 
+# User's personal interview prep files
+interview_prep/*
+
 # Secrets (never commit — use .env.example as template)
 .env
 
