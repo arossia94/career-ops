@@ -16,9 +16,9 @@
 10. Construye competency grid desde requisitos del JD (6-8 keyword phrases)
 11. Inyecta keywords naturalmente en logros existentes (NUNCA inventa)
 12. Genera HTML completo desde template + contenido personalizado
-13. Lee `name` de `config/profile.yml` → normaliza a kebab-case lowercase (e.g. "John Doe" → "john-doe") → `{candidate}`
-14. Escribe HTML a `/tmp/cv-{candidate}-{company}.html`
-15. Ejecuta: `node generate-pdf.mjs /tmp/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={letter|a4}`
+13. Lee `name` de `config/profile.yml` → normaliza a Snake Case (e.g. "John Doe" → "John_Doe") → `{candidate}`
+14. Escribe HTML a `/tmp/CV-{candidate}-{company}.html`. El nombre del candidato y de la empresa deben estar en Snake Case
+15. Ejecuta: `node generate-pdf.mjs /tmp/CV-{candidate}-{company}.html output/CV-{candidate}-{company}-{DD_MM_YY}.pdf --format={letter|a4}`
 15. Reporta: ruta del PDF, nº páginas, % cobertura de keywords
 
 ## Reglas ATS (parseo limpio)
@@ -33,12 +33,12 @@
 
 ## Diseño del PDF
 
-- **Fonts**: Space Grotesk (headings, 600-700) + DM Sans (body, 400-500)
+- **Fonts**: Helvetica (headings, 600-700) + Helvetica (body, 400-500)
 - **Fonts self-hosted**: `fonts/`
-- **Header**: nombre en Space Grotesk 24px bold + línea gradiente `linear-gradient(to right, hsl(187,74%,32%), hsl(270,70%,45%))` 2px + fila de contacto
-- **Section headers**: Space Grotesk 13px, uppercase, letter-spacing 0.05em, color cyan primary
-- **Body**: DM Sans 11px, line-height 1.5
-- **Company names**: color accent purple `hsl(270,70%,45%)`
+- **Header**: nombre en Helvetica 24px bold + línea gradiente `linear-gradient(to right, hsl(187,74%,32%), hsl(225, 72%, 53%))` 2px + fila de contacto
+- **Section headers**: Helvetica 13px, uppercase, letter-spacing 0.05em, color cyan primary
+- **Body**: Helvetica 11px, line-height 1.5
+- **Company names**: color accent royal blue `hsl(225, 72%, 53%)`
 - **Márgenes**: 0.6in
 - **Background**: blanco puro
 
@@ -49,8 +49,9 @@
 3. Core Competencies (6-8 keyword phrases en flex-grid)
 4. Work Experience (cronológico inverso)
 5. Projects (top 3-4 más relevantes)
-6. Education & Certifications
 7. Skills (idiomas + técnicos)
+6. Education & Certifications
+
 
 ## Estrategia de keyword injection (ético, basado en verdad)
 
@@ -157,12 +158,12 @@ e. `commit-editing-transaction` to save (ONLY after user approval)
 a. `export-design` the duplicate as PDF (format: a4 or letter based on JD location)
 b. **IMMEDIATELY** download the PDF using Bash:
    ```bash
-   curl -sL -o "output/cv-{candidate}-{company}-canva-{YYYY-MM-DD}.pdf" "{download_url}"
+   curl -sL -o "output/CV-{candidate}-{company}-canva-{DD-MM-YY}.pdf" "{download_url}"
    ```
    The export URL is a pre-signed S3 link that expires in ~2 hours. Download it right away.
 c. Verify the download:
    ```bash
-   file output/cv-{candidate}-{company}-canva-{YYYY-MM-DD}.pdf
+   file output/CV-{candidate}-{company}-canva-{DD-MM-YY}.pdf
    ```
    Must show "PDF document". If it shows XML or HTML, the URL expired — re-export and retry.
 d. Report: PDF path, file size, Canva design URL (for manual tweaking)
