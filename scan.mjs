@@ -79,6 +79,27 @@ function detectApi(company) {
     };
   }
 
+  // Rippling — ats.rippling.com/[{locale}/]{slug}/...
+  // Locale prefixes (en-GB, es-419, pt-BR, …) are optional; the slug is the
+  // segment that is not in xx-XX form.
+  const ripplingMatch = url.match(/ats\.rippling\.com\/(?:[a-z]{2}-[A-Za-z0-9]{2,3}\/)?([^/?#]+)/);
+  if (ripplingMatch) {
+    return {
+      type: 'rippling',
+      url: `https://api.rippling.com/platform/api/ats/v1/board/${ripplingMatch[1]}/jobs`,
+    };
+  }
+
+  // BambooHR — {subdomain}.bamboohr.com/careers
+  const bamboohrMatch = url.match(/([^/?#.]+)\.bamboohr\.com/);
+  if (bamboohrMatch) {
+    return {
+      type: 'bamboohr',
+      url: `https://${bamboohrMatch[1]}.bamboohr.com/careers/list`,
+      siteBase: `https://${bamboohrMatch[1]}.bamboohr.com/careers`,
+    };
+  }
+
   // Workable — apply.workable.com/{account}
   const workableMatch = url.match(/apply\.workable\.com\/([^/?#]+)/);
   if (workableMatch) {
@@ -183,6 +204,33 @@ function parseSmartRecruiters(json, companyName) {
   }));
 }
 
+function parseRippling(json, companyName) {
+  // Endpoint returns a bare array of jobs. No publish date is exposed.
+  if (!Array.isArray(json)) return [];
+  return json.map(j => ({
+    title: j.name || '',
+    url: j.url || '',
+    company: companyName,
+    location: j.workLocation?.label || '',
+    published: '',
+  }));
+}
+
+function parseBamboohr(json, companyName, api) {
+  // Endpoint returns { meta, result: [...] }. No publish date is exposed.
+  // Location lives in `location` (city/state) or `atsLocation` (country/…).
+  const jobs = json.result || [];
+  return jobs.map(j => ({
+    title: j.jobOpeningName || '',
+    url: j.id ? `${api.siteBase}/${j.id}` : '',
+    company: companyName,
+    location: [j.location?.city, j.location?.state].filter(Boolean).join(', ')
+      || [j.atsLocation?.city, j.atsLocation?.province, j.atsLocation?.state, j.atsLocation?.country].filter(Boolean).join(', ')
+      || (j.isRemote ? 'Remote' : ''),
+    published: '',
+  }));
+}
+
 function parseWorkable(json, companyName) {
   const jobs = json.jobs || [];
   return jobs.map(j => ({
@@ -210,6 +258,8 @@ const PARSERS = {
   ashby: parseAshby,
   lever: parseLever,
   recruitee: parseRecruitee,
+  rippling: parseRippling,
+  bamboohr: parseBamboohr,
   smartrecruiters: parseSmartRecruiters,
   workable: parseWorkable,
   workday: parseWorkday,
