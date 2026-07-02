@@ -61,6 +61,7 @@ Ejemplos de reformulación legítima:
 - JD dice "stakeholder management" y CV dice "collaborated with team" → cambiar a "stakeholder management across engineering, operations, and business"
 
 **NUNCA añadir skills que el candidato no tiene. Solo reformular experiencia real con el vocabulario exacto del JD.**
+**SI el JD matchea o es muy cercano a alguna experiencia previa, hacer hincapié en los proyectos y en el portfolio sin cambiar el nombre de los proyectos.**
 
 ## Template HTML
 
@@ -114,6 +115,7 @@ c. Note the new `design_id` for the duplicate
 a. `get-design-content` on the new design → returns all text elements (richtexts) with their content
 b. Map text elements to CV sections by content matching:
    - Look for the candidate's name → header section
+   - Look for portfolio, Github webpage and LinkedIn of the candidate -> Store information about projects.
    - Look for "Summary" or "Professional Summary" → summary section
    - Look for company names from cv.md → experience sections
    - Look for degree/school names → education section
