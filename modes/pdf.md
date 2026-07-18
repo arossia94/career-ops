@@ -180,6 +180,7 @@ d. Report: PDF path, file size, Canva design URL (for manual tweaking)
 ## Verification
 
 After generating the CV, check explicitly the following:
+- No career gap has been manufactured by dropping experiences that appear in cv.md Shortening the description of the experience is allowed, dropping it no.
 - Personal and contact details match what is in cv.md
 - The education and previous experiences match what is in cv.md.
 - The projects match what is in cv.md, the portfolio webpage, github and linkedin profiles.
