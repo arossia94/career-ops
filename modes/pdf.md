@@ -23,8 +23,8 @@
 
 ## Reglas ATS (parseo limpio)
 
-- Layout single-column (sin sidebars, sin columnas paralelas)
-- Headers estándar: "Professional Summary", "Work Experience", "Education", "Skills", "Certifications", "Projects"
+- Layout single-column (without sidebars, without parallel columns)
+- Standard Headers: "Professional Summary", "Work Experience", "Education", "Skills", "Certifications", "Projects"
 - Sin texto en imágenes/SVGs
 - Sin info crítica en headers/footers del PDF (ATS los ignora)
 - UTF-8, texto seleccionable (no rasterizado)
@@ -86,7 +86,7 @@ Usar el template en `cv-template.html`. Reemplazar los placeholders `{{...}}` co
 | `{{SECTION_EXPERIENCE}}` | Work Experience / Experiencia Laboral |
 | `{{EXPERIENCE}}` | HTML de cada trabajo con bullets reordenados |
 | `{{SECTION_PROJECTS}}` | Projects / Proyectos |
-| `{{PROJECTS}}` | HTML de top 3-4 proyectos |
+| `{{PROJECTS}}` | Top 3-4 projects in HTML, extracted from CV, portfolio and Github pages |
 | `{{SECTION_EDUCATION}}` | Education / Formación |
 | `{{EDUCATION}}` | HTML de educación |
 | `{{SECTION_CERTIFICATIONS}}` | Certifications / Certificaciones |
@@ -176,6 +176,16 @@ d. Report: PDF path, file size, Canva design URL (for manual tweaking)
 - If text elements can't be mapped → warn user, show what was found, ask for manual mapping
 - If `find_and_replace_text` finds no matches → try broader substring matching
 - Always provide the Canva design URL so the user can edit manually if auto-edit fails
+
+## Verification
+
+After generating the CV, check explicitly the following:
+- Personal and contact details match what is in cv.md
+- The education and previous experiences match what is in cv.md.
+- The projects match what is in cv.md, the portfolio webpage, github and linkedin profiles.
+- The skills and coding languages associated to each project match their description on cv.md, the Github or LinkedIn profiles.
+- The professional summary does not contain invented experiences or skills.
+
 
 ## Post-generación
 
