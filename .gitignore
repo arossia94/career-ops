@@ -28,7 +28,7 @@ portals.yml
 modes/_profile.md
 .update-dismissed
 .update-lock
-interview-prep/story-bank.md
+interview-prep/*
 
 # User's personal interview prep files
 interview_prep/*
@@ -40,7 +40,7 @@ interview_prep/*
 .resolved-prompt-*
 node_modules/
 bun.lock
-
+.playwright-mcp
 # OS
 .DS_Store
 *.mov
