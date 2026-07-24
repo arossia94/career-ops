@@ -75,7 +75,7 @@ Show each status with count and percentage of total. Use a simple table:
 
 | Outcome | Avg Score | Min | Max | Count |
 |---------|-----------|-----|-----|-------|
-| Positive | X.X/5 | X.X | X.X | X |
+| Positive | XX.X/100 | XX.X | XX.X | X |
 | Negative | ... | | | |
 | Self-filtered | ... | | | |
 | Pending | ... | | | |
@@ -122,7 +122,7 @@ Example:
 > Key findings:
 > - Geo-restricted roles are 0% conversion (7 of 24) -- stop evaluating US/Canada-only postings
 > - Regional/global remote roles convert at 57-67% -- these are your sweet spot
-> - No positive outcomes below 4.2/5 -- consider this your score floor
+> - No positive outcomes below 84/100 -- consider this your score floor
 >
 > Full report: `reports/pattern-analysis-2026-04-08.md`
 

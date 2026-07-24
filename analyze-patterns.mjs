@@ -123,12 +123,12 @@ function parseReport(reportPath) {
   if (domainMatch) report.domain = domainMatch[1].trim();
 
   // Extract scoring table — look for table with "Global" row (using plain, bold already stripped)
-  const scoreRegex = /\|\s*(?:CV Match|Match con CV)\s*\|\s*([\d.]+)\/5\s*\|/i;
-  const northStarRegex = /\|\s*(?:North Star)\s*\|\s*([\d.]+)\/5\s*\|/i;
-  const compScoreRegex = /\|\s*(?:Comp)\s*\|\s*([\d.]+)\/5\s*\|/i;
-  const culturalRegex = /\|\s*(?:Cultural signals|Cultural)\s*\|\s*([\d.]+)\/5\s*\|/i;
+  const scoreRegex = /\|\s*(?:CV Match|Match con CV)\s*\|\s*([\d.]+)\/100\s*\|/i;
+  const northStarRegex = /\|\s*(?:North Star)\s*\|\s*([\d.]+)\/100\s*\|/i;
+  const compScoreRegex = /\|\s*(?:Comp)\s*\|\s*([\d.]+)\/100\s*\|/i;
+  const culturalRegex = /\|\s*(?:Cultural signals|Cultural)\s*\|\s*([\d.]+)\/100\s*\|/i;
   const redFlagsRegex = /\|\s*(?:Red flags)\s*\|\s*([-+]?[\d.]+)\s*\|/i;
-  const globalRegex = /\|\s*(?:Global)\s*\|\s*([\d.]+)\/5\s*\|/i;
+  const globalRegex = /\|\s*(?:Global)\s*\|\s*([\d.]+)\/100\s*\|/i;
 
   const cvScoreMatch = plain.match(scoreRegex);
   if (cvScoreMatch) report.scores.cvMatch = parseFloat(cvScoreMatch[1]);
@@ -350,7 +350,7 @@ function analyze() {
   const positiveScores = scoresByOutcome.positive.filter(s => s > 0);
   const minPositiveScore = positiveScores.length > 0 ? Math.min(...positiveScores) : 0;
   const scoreThreshold = {
-    recommended: minPositiveScore > 0 ? Math.floor(minPositiveScore * 10) / 10 : 3.5,
+    recommended: minPositiveScore > 0 ? Math.floor(minPositiveScore * 10) / 10 : 70,
     reasoning: positiveScores.length > 0
       ? `Lowest score among positive outcomes is ${minPositiveScore}. No applications below this score led to progress.`
       : 'Not enough positive outcome data to determine threshold.',
@@ -405,10 +405,10 @@ function analyze() {
   }
 
   // Score threshold recommendation
-  if (minPositiveScore > 3.0) {
+  if (minPositiveScore > 60) {
     recommendations.push({
-      action: `Set minimum score threshold at ${scoreThreshold.recommended}/5 before generating PDFs`,
-      reasoning: `No positive outcomes below ${minPositiveScore}/5. Scores below this are wasted effort.`,
+      action: `Set minimum score threshold at ${scoreThreshold.recommended}/100 before generating PDFs`,
+      reasoning: `No positive outcomes below ${minPositiveScore}/100. Scores below this are wasted effort.`,
       impact: 'medium',
     });
   }
@@ -491,7 +491,7 @@ function printSummary(result) {
   console.log('-'.repeat(40));
   for (const [group, stats] of Object.entries(scoreComparison)) {
     if (stats.count > 0) {
-      console.log(`  ${group.padEnd(15)} avg ${stats.avg}/5  (${stats.count} entries, range ${stats.min}-${stats.max})`);
+      console.log(`  ${group.padEnd(15)} avg ${stats.avg}/100  (${stats.count} entries, range ${stats.min}-${stats.max})`);
     }
   }
 
@@ -521,7 +521,7 @@ function printSummary(result) {
   }
 
   // Score threshold
-  console.log(`\nSCORE THRESHOLD: ${scoreThreshold.recommended}/5`);
+  console.log(`\nSCORE THRESHOLD: ${scoreThreshold.recommended}/100`);
   console.log(`  ${scoreThreshold.reasoning}`);
 
   // Recommendations
