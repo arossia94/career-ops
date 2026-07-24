@@ -308,15 +308,17 @@ career-ops/
 - **Dashboard**: Go + Bubble Tea + Lipgloss (Catppuccin Mocha theme)
 - **Data**: Markdown tables + YAML config + TSV batch files
 
-## Also Open Source
+## About the Authors
 
-- **[cv-santiago](https://github.com/arossia94/cv-santiago)** -- The portfolio website (santifer.io) with AI chatbot, LLMOps dashboard, and case studies. If you need a portfolio to showcase alongside your job search, fork it and make it yours.
+This agentic AI tool is a development from the original [career-ops](https://github.com/santifer/career-ops) first developed by [santifer](https://santifer.io), to whom we are grateful and indebted.
 
-## About the Author
+This development has been tailored to the career needs of alumni of Instituto Balseiro - Universidad Nacional de Cuyo and publicized via its Alumni Association (AEIB), but is left open-source for everyone's benefit.
 
-I'm Santiago -- Head of Applied AI, former founder (built and sold a business that still runs with my name on it). I built career-ops to manage my own job search. It worked: I used it to land my current role.
+The lead developers of this version are,
 
-My portfolio and other open source projects → [santifer.io](https://santifer.io)
+- Federico Baravalle -- Mechanical Engineer with vast experience in Argentina and Italy, founder, passionate about Physical AI and robotics.
+- Dr Alejo Rossia -- Physicist with large experience in theoretical particle physics research, statistics, data science, and ML.
+
 
 ## Star History
 
