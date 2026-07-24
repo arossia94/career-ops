@@ -27,8 +27,8 @@ Verarbeitet URLs von Stellenanzeigen, die in `data/pipeline.md` gesammelt wurden
 - [!] https://private.url/job — Fehler: Login erforderlich
 
 ## Verarbeitet
-- [x] #143 | https://jobs.example.com/posting/789 | Acme GmbH | AI PM | 84.0/100 | PDF ✅
-- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 42.0/100 | PDF ❌
+- [x] #143 | https://jobs.example.com/posting/789 | Acme GmbH | AI PM | 84/100 | PDF ✅
+- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 42/100 | PDF ❌
 ```
 
 > Hinweis: Die Sektion-Überschriften können auf EN ("Pending"/"Processed"), ES ("Pendientes"/"Procesadas") oder DE ("Offen"/"Verarbeitet") sein. Beim Lesen flexibel sein, beim Schreiben dem Stil der bestehenden Datei treu bleiben.

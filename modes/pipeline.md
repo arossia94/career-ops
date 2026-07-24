@@ -27,8 +27,8 @@ Procesa URLs de ofertas acumuladas en `data/pipeline.md`. El usuario agrega URLs
 - [!] https://private.url/job — Error: login required
 
 ## Procesadas
-- [x] #143 | https://jobs.example.com/posting/789 | Acme Corp | AI PM | 84.0/100 | PDF ✅
-- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 42.0/100 | PDF ❌
+- [x] #143 | https://jobs.example.com/posting/789 | Acme Corp | AI PM | 84/100 | PDF ✅
+- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 42/100 | PDF ❌
 ```
 
 ## Detección inteligente de JD desde URL
