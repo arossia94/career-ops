@@ -119,7 +119,7 @@ Sección de **gaps** con estrategia de mitigación para cada uno:
 
 Usar WebSearch para salarios actuales (Glassdoor, Levels.fyi, Blind), reputación comp de la empresa, tendencia demanda. Tabla con datos y fuentes citadas. Si no hay datos, decirlo.
 
-Score de comp (1-100): 81-100=top quartile, 61-80=above market, 41-60=median, 21-40=slightly below, 1-20=well below.
+Score de comp (0-100): 81-100=top quartile, 61-80=above market, 41-60=median, 21-40=slightly below, 0-20=well below.
 
 #### Bloque E — Plan de Personalización
 
@@ -299,7 +299,7 @@ batch/tracker-additions/{{ID}}.tsv
 
 Formato TSV (una sola línea, sin header, 9 columnas tab-separated):
 ```
-{next_num}\t{{DATE}}\t{empresa}\t{rol}\t{status}\t{score}/5\t{pdf_emoji}\t[{{REPORT_NUM}}](reports/{{REPORT_NUM}}-{company-slug}-{{DATE}}.md)\t{nota_1_frase}
+{next_num}\t{{DATE}}\t{empresa}\t{rol}\t{status}\t{score}/100\t{pdf_emoji}\t[{{REPORT_NUM}}](reports/{{REPORT_NUM}}-{company-slug}-{{DATE}}.md)\t{nota_1_frase}
 ```
 
 **Columnas TSV (orden exacto):**

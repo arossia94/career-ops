@@ -294,7 +294,7 @@ Write one TSV file per evaluation to `batch/tracker-additions/{num}-{company-slu
 3. `company` -- short company name
 4. `role` -- job title
 5. `status` -- canonical status (e.g., `Evaluated`)
-6. `score` -- format `XX.X/100` (e.g., `81.0/100`)
+6. `score` -- format `XX/100` (e.g., `81/100`)
 7. `pdf` -- `✅` or `❌`
 8. `report` -- markdown link `[num](reports/...)`
 9. `notes` -- one-line summary
