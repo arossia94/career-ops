@@ -112,6 +112,12 @@ Things to say, do, and avoid based on research:
 - **Things to avoid:** specific anti-patterns flagged in interview reviews
 - **Questions to ask them:** 2-3 sharp questions that demonstrate you've researched the company, tied to recent news or blog posts discovered in Step 1
 
+## Step 8 - Questions previously received
+
+If the file `interview-prep/question_bank.md` exists, look for questions that are either under the "General" category or associated to jobs with a similar description.
+
+Prepare a short answer (60-120 seconds) to each of the relevant questions and add it to the report.
+
 ## Output
 
 Save the full report to `interview-prep/{company-slug}-{role-slug}.md` with this header:
