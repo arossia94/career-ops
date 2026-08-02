@@ -31,7 +31,7 @@ modes/_profile.md
 interview-prep/story-bank.md
 
 # User's personal interview prep files
-interview_prep/*
+interview_prep/*.md
 
 # Secrets (never commit — use .env.example as template)
 .env
