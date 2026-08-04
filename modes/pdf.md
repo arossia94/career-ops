@@ -11,7 +11,7 @@
    - Resto del mundo → `a4`
 6. Detecta arquetipo del rol → adapta framing
 7. Reescribe Professional Summary inyectando keywords del JD + exit narrative bridge ("Built and sold a business. Now applying systems thinking to [domain del JD].")
-8. Selecciona top 3-4 proyectos más relevantes para la oferta
+8. Escanea el portfolio, Github y LinkedIn profiles y selecciona top 3-4 proyectos más relevantes para la oferta
 9. Reordena bullets de experiencia por relevancia al JD
 10. Construye competency grid desde requisitos del JD (6-8 keyword phrases)
 11. Inyecta keywords naturalmente en logros existentes (NUNCA inventa)
@@ -23,8 +23,8 @@
 
 ## Reglas ATS (parseo limpio)
 
-- Layout single-column (sin sidebars, sin columnas paralelas)
-- Headers estándar: "Professional Summary", "Work Experience", "Education", "Skills", "Certifications", "Projects"
+- Layout single-column (without sidebars, without parallel columns)
+- Standard Headers: "Professional Summary", "Work Experience", "Education", "Skills", "Certifications", "Projects"
 - Sin texto en imágenes/SVGs
 - Sin info crítica en headers/footers del PDF (ATS los ignora)
 - UTF-8, texto seleccionable (no rasterizado)
@@ -61,6 +61,7 @@ Ejemplos de reformulación legítima:
 - JD dice "stakeholder management" y CV dice "collaborated with team" → cambiar a "stakeholder management across engineering, operations, and business"
 
 **NUNCA añadir skills que el candidato no tiene. Solo reformular experiencia real con el vocabulario exacto del JD.**
+**SI el JD matchea o es muy cercano a alguna experiencia previa, hacer hincapié en los proyectos y en el portfolio sin cambiar el nombre de los proyectos.**
 
 ## Template HTML
 
@@ -85,7 +86,7 @@ Usar el template en `cv-template.html`. Reemplazar los placeholders `{{...}}` co
 | `{{SECTION_EXPERIENCE}}` | Work Experience / Experiencia Laboral |
 | `{{EXPERIENCE}}` | HTML de cada trabajo con bullets reordenados |
 | `{{SECTION_PROJECTS}}` | Projects / Proyectos |
-| `{{PROJECTS}}` | HTML de top 3-4 proyectos |
+| `{{PROJECTS}}` | Top 3-4 projects in HTML, extracted from CV, portfolio and Github pages |
 | `{{SECTION_EDUCATION}}` | Education / Formación |
 | `{{EDUCATION}}` | HTML de educación |
 | `{{SECTION_CERTIFICATIONS}}` | Certifications / Certificaciones |
@@ -114,6 +115,7 @@ c. Note the new `design_id` for the duplicate
 a. `get-design-content` on the new design → returns all text elements (richtexts) with their content
 b. Map text elements to CV sections by content matching:
    - Look for the candidate's name → header section
+   - Look for portfolio, Github webpage and LinkedIn of the candidate -> Store information about projects.
    - Look for "Summary" or "Professional Summary" → summary section
    - Look for company names from cv.md → experience sections
    - Look for degree/school names → education section
@@ -174,6 +176,17 @@ d. Report: PDF path, file size, Canva design URL (for manual tweaking)
 - If text elements can't be mapped → warn user, show what was found, ask for manual mapping
 - If `find_and_replace_text` finds no matches → try broader substring matching
 - Always provide the Canva design URL so the user can edit manually if auto-edit fails
+
+## Verification
+
+After generating the CV, check explicitly the following:
+- No career gap has been manufactured by dropping experiences that appear in cv.md Shortening the description of the experience is allowed, dropping it no.
+- Personal and contact details match what is in cv.md
+- The education and previous experiences match what is in cv.md.
+- The projects match what is in cv.md, the portfolio webpage, github and linkedin profiles.
+- The skills and coding languages associated to each project match their description on cv.md, the Github or LinkedIn profiles.
+- The professional summary does not contain invented experiences or skills.
+
 
 ## Post-generación
 
