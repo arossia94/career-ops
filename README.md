@@ -55,7 +55,7 @@ Career-Ops turns any AI coding CLI into a full job search command center. Instea
 - **Processes in batch** -- evaluate 10+ offers in parallel with sub-agents
 - **Tracks everything** in a single source of truth with integrity checks
 
-> **Important: This is NOT a spray-and-pray tool.** Career-ops is a filter -- it helps you find the few offers worth your time out of hundreds. The system strongly recommends against applying to anything scoring below 4.0/5. Your time is valuable, and so is the recruiter's. Always review before submitting.
+> **Important: This is NOT a spray-and-pray tool.** Career-ops is a filter -- it helps you find the few offers worth your time out of hundreds. The system strongly recommends against applying to anything scoring below 70.0/100. Your time is valuable, and so is the recruiter's. Always review before submitting.
 
 Career-ops is agentic: Claude Code navigates career pages with Playwright, evaluates fit by reasoning about your CV vs the job description (not keyword matching), and adapts your resume per listing.
 
@@ -308,15 +308,17 @@ career-ops/
 - **Dashboard**: Go + Bubble Tea + Lipgloss (Catppuccin Mocha theme)
 - **Data**: Markdown tables + YAML config + TSV batch files
 
-## Also Open Source
+## About the Authors
 
-- **[cv-santiago](https://github.com/arossia94/cv-santiago)** -- The portfolio website (santifer.io) with AI chatbot, LLMOps dashboard, and case studies. If you need a portfolio to showcase alongside your job search, fork it and make it yours.
+This agentic AI tool is a development from the original [career-ops](https://github.com/santifer/career-ops) first developed by [santifer](https://santifer.io), to whom we are grateful and indebted.
 
-## About the Author
+This development has been tailored to the career needs of alumni of Instituto Balseiro - Universidad Nacional de Cuyo and publicized via its Alumni Association (AEIB), but is left open-source for everyone's benefit.
 
-I'm Santiago -- Head of Applied AI, former founder (built and sold a business that still runs with my name on it). I built career-ops to manage my own job search. It worked: I used it to land my current role.
+The lead developers of this version are,
 
-My portfolio and other open source projects → [santifer.io](https://santifer.io)
+- Federico Baravalle -- Mechanical Engineer with vast experience in Argentina and Italy, founder, passionate about Physical AI and robotics.
+- Dr Alejo Rossia -- Physicist with large experience in theoretical particle physics research, statistics, data science, and ML.
+
 
 ## Star History
 
