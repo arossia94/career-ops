@@ -25,7 +25,7 @@ no sponsorship."}
 
 ## Target Archetypes
 The roles you actually want. Triage scores "archetype fit" against this list.
-A direct hit scores 4–5; an adjacent title scores 3; a mismatch scores 1–2.
+A direct hit scores 80–100; an adjacent title scores 60; a mismatch scores 20–40.
 
 | # | Archetype | What they buy (your proof) |
 |---|-----------|----------------------------|
@@ -52,14 +52,14 @@ Your strongest, quantified accomplishments. Triage checks how many map to a JD.
 
 ## Location Scoring
 How to score the "location" dimension. Adjust to your own policy.
-- Fully remote / async-first → **5.0**
-- Light hybrid (flexible, few days/month) → **4.0–5.0**
+- Fully remote / async-first → **100**
+- Light hybrid (flexible, few days/month) → **80–100**
 - Regular hybrid or on-site, local (no move) → **{your score / comp condition}**
 - On-site requiring relocation → **{your score / comp condition}**
-- High travel (>25%) → **deduct 0.5–1.0**
+- High travel (>25%) → **deduct 10–20**
 
-## Hard DQ Criteria — instant FAIL (< 3.0)
-Score ≤ 2.5 immediately and skip detailed analysis if ANY apply. These are the
+## Hard DQ Criteria — instant FAIL (< 60)
+Score ≤ 70 immediately and skip detailed analysis if ANY apply. These are the
 hard gaps you cannot bridge — be specific so triage can pattern-match them.
 - {e.g. Active license/clearance you do not hold}
 - {e.g. Primary hands-on skill outside your discipline}
@@ -69,16 +69,16 @@ hard gaps you cannot bridge — be specific so triage can pattern-match them.
 ## Quick Scoring Guide
 
 Bands are relative to `triage_threshold` (`config/profile.yml → pipeline.triage_threshold`,
-default **3.5**), matching the verdict table in `modes/triage.md` — so a score at or
+default **70**), matching the verdict table in `modes/triage.md` — so a score at or
 above the threshold is PASS, and only the band below it is MARGINAL.
 
 | Score | Verdict | What it means |
 |-------|---------|---------------|
-| ≥ threshold (default 3.5) | **PASS** | Clears the bar — strong archetype + comp + location, gaps bridgeable |
-| 3.0 – (threshold − 0.1) | **MARGINAL** | Borderline — shown to user as one line |
-| < 3.0 | **FAIL** | Does not clear the bar — filtered |
+| ≥ threshold (default 70) | **PASS** | Clears the bar — strong archetype + comp + location, gaps bridgeable |
+| 60 – (threshold − 1) | **MARGINAL** | Borderline — shown to user as one line |
+| < 60 | **FAIL** | Does not clear the bar — filtered |
 
-## Soft Red Flags (−0.5 each, additive)
+## Soft Red Flags (−10 each, additive)
 Not disqualifiers, but they lower the score.
 - {e.g. A "required" cert you list as a gap}
 - {e.g. A delivery model or domain that needs a framing rewrite}

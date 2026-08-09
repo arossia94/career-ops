@@ -23,7 +23,7 @@ node agent-inbox.mjs add "run a scan and triage anything new"
 ```bash
 node agent-inbox.mjs list            # pending items
 node agent-inbox.mjs list --all      # include resolved items
-node agent-inbox.mjs resolve 1 --result "scored 4.3 — report 012"
+node agent-inbox.mjs resolve 1 --result "scored 86 — report 012"
 ```
 
 `data/agent-inbox.md` is user-layer (gitignored). Items look like:
