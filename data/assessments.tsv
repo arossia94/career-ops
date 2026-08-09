@@ -1,0 +1,2 @@
+# assessments.tsv — append-only skills-assessment log (user layer). Never rewrite rows.
+# {YYYY-MM-DD}\t{company}\t{report#|-}\t{platform}\t{subject}\t{threshold%|-}\t{score%|-}\t{stale_note}

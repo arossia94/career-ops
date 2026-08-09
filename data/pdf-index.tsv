@@ -1,0 +1,2 @@
+# pdf-index.tsv — PDF-to-report linkage manifest. Rebuilt by generate-pdf.mjs / sync-pdf-flags.mjs.
+# {report#}\t{pdf_path}\t{html_path}\t{format}\t{YYYY-MM-DD}
