@@ -161,7 +161,7 @@ Guardar evaluación completa en `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`.
 
 **Fecha:** {YYYY-MM-DD}
 **Arquetipo:** {detectado}
-**Score:** {X/5}
+**Score:** {X/100}
 **Legitimacy:** {High Confidence | Proceed with Caution | Suspicious}
 **PDF:** {ruta o pendiente}
 

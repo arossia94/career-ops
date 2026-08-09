@@ -32,7 +32,7 @@ The evaluation uses 6 blocks (A-F) with a global score of 0-100:
 |-----------|-----------------|
 | CV match | Skills, experience, proof points alignment |
 | North Star alignment | How well the role fits the user's target archetypes (from _profile.md) |
-| Comp | Salary vs market (5=top quartile, 1=well below) |
+| Comp | Salary vs market (81-100=top quartile, 0-20=well below) |
 | Cultural signals | Company culture, growth, stability, remote policy |
 | Red flags | Blockers, warnings (negative adjustments) |
 | **Global** | Weighted average of above |
@@ -46,7 +46,7 @@ The evaluation uses 6 blocks (A-F) with a global score of 0-100:
 
 ## Posting Legitimacy (Block G)
 
-Block G assesses whether a posting is likely a real, active opening. It does NOT affect the 1-5 global score -- it is a separate qualitative assessment.
+Block G assesses whether a posting is likely a real, active opening. It does NOT affect the 0-100 global score -- it is a separate qualitative assessment.
 
 **Three tiers:**
 - **High Confidence** -- Real, active opening (most signals positive)
