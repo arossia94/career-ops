@@ -30,6 +30,7 @@ Edit `config/profile.yml` with your personal details: name, email, target roles,
 Create `cv.md` in the project root with your full CV in markdown format. This is the source of truth for all evaluations and PDFs.
 
 (Optional) Create `article-digest.md` with proof points from your portfolio projects/articles.
+(Optional) Create `interview-prep/question-bank.md` with questions you received in previous interviews to prepare answers to similar ones for the future.
 
 ### 4. Configure portals
 
@@ -63,6 +64,7 @@ Then paste a job offer URL or description. Career-ops will automatically evaluat
 | Batch evaluate | `/career-ops batch` |
 | Check tracker status | `/career-ops tracker` |
 | Fill application form | `/career-ops apply` |
+| Get guidance for the interview | `/career-ops interview-prep` |
 
 ## Verify Setup
 
