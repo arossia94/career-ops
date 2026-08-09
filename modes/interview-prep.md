@@ -89,7 +89,7 @@ For each: the likely question, why it comes up, and a recommended framing (hones
 
 For each gap, suggest: "You need a story about {topic}. Consider: {specific experience from cv.md that could become a STAR+R story}."
 
-If the user wants to draft missing stories, help them build STAR+R format and append to `interview-prep/story-bank.md`.
+If the user wants to draft missing stories, help them build STAR+R format and append to `interview-prep/story-bank.md`. If `interview-prep/story-bank.md` does not exist, copy `interview-prep/story-bank.example` and rename it as `interview-prep/story-bank.md`.
 
 ## Step 6 — Technical Prep Checklist
 
@@ -114,7 +114,8 @@ Things to say, do, and avoid based on research:
 
 ## Step 8 - Questions previously received
 
-If the file `interview-prep/question_bank.md` exists, look for questions that are either under the "General" category or associated to jobs with a similar description.
+If the file `interview-prep/question-bank.md` exists, look for questions that are either under the "General" category or associated to jobs with a similar description.
+Do not be too strict about matching job descriptions, e.g. for a "Data Scientist" job, look at all the jobs there that contain "Data Scientists" and then pick the questions that are either general or, if they are more technical, match the JD for which we are preparing.
 
 Prepare a short answer (60-120 seconds) to each of the relevant questions and add it to the report.
 

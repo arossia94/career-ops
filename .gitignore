@@ -11,9 +11,7 @@ output/*
 !output/.gitkeep
 batch/logs/*
 !batch/logs/.gitkeep
-batch/batch-state.tsv
-batch/batch-input.tsv
-batch/tracker-additions/**/*.tsv
+batch/**/*.tsv
 !batch/tracker-additions/.gitkeep
 jds/*
 !jds/.gitkeep
@@ -28,10 +26,9 @@ portals.yml
 modes/_profile.md
 .update-dismissed
 .update-lock
-interview-prep/story-bank.md
 
 # User's personal interview prep files
-interview_prep/*.md
+interview-prep/*.md
 
 # Secrets (never commit — use .env.example as template)
 .env

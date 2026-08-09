@@ -91,6 +91,7 @@ const USER_PATHS = [
   'portals.yml',
   'article-digest.md',
   'interview-prep/story-bank.md',
+  'interview-prep/question-bank.md',
   'data/',
   'reports/',
   'output/',
