@@ -4,16 +4,58 @@ on:
   pull_request:
     branches: [main]
 
+# A force-push supersedes the running matrix; cancel it instead of letting
+# stale legs occupy runners (3 jobs per push at this repo's PR volume).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      # One OS failing must not cancel the evidence from the others —
+      # a platform-specific failure is exactly what this matrix exists to isolate.
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      # The repo is committed with LF; Windows runners default to autocrlf,
+      # which would rewrite every text file on checkout and make regexes that
+      # rely on `.` (no \r) fail in ways the other platforms never see.
+      - name: Force LF checkout on Windows
+        if: runner.os == 'Windows'
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20'
-      - uses: actions/setup-go@v6
+          node-version: '24'
+      - uses: actions/setup-go@v7
         with:
-          go-version: '1.22'
-      - run: npm install
-      - run: node test-all.mjs --quick
+          go-version: '1.26'
+      # Skip the postinstall (npx playwright install chromium); the tests
+      # never launch a browser, so the ~170 MB download is pure CI overhead.
+      - run: npm install --ignore-scripts
+      # FORK DELTA: upstream runs `node test-all.mjs --quick` here. This fork
+      # still carries the v1.7 test-all.mjs (upstream's is 13k lines with 149
+      # /5-scale fixtures — deliberately deferred, see 52175dc), and a v1.7
+      # harness judging v1.24 scripts produces false failures: it asserts
+      # verify-pipeline.mjs exits 0, while the v1.24 script correctly exits 1
+      # on real tracker data errors. The tests/ tree is this fork's actual
+      # coverage and is green. Restore the upstream line when test-all.mjs is
+      # synced and rescaled.
+      - run: node --test "tests/**/*.test.mjs"
+      - name: Go dashboard tests
+        run: go test ./...
+        working-directory: dashboard
+
+# FORK DELTA: upstream also defines `cv-visual` and `upgrade-gate` jobs here.
+# Both are omitted until their prerequisites land in this fork:
+#   cv-visual    — needs the `test:cv-visual` npm script, and its baseline
+#                  screenshots were rendered from upstream's cv-template.html.
+#                  This fork keeps its own Helvetica template (see fb8e519),
+#                  so the baselines cannot match until they are regenerated
+#                  against it.
+#   upgrade-gate — needs upgrade-tests.mjs and seed-fixture.mjs, which belong
+#                  to the updater story (3.9) and must be validated against
+#                  this fork's arossia94-pointed update-system.mjs.
