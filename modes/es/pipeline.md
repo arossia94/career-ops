@@ -9,8 +9,8 @@ Procesa las URLs de ofertas acumuladas en `data/pipeline.md`. El candidato añad
    a. Reservar el siguiente `REPORT_NUM` secuencial de forma atómica ejecutando `node reserve-report-num.mjs` (y liberar el sentinel ejecutando `node reserve-report-num.mjs --release <num>` una vez escrito el report)
    b. **Extraer la oferta** con Playwright (`browser_navigate` + `browser_snapshot`) -> WebFetch -> WebSearch
    c. Si la URL no es accesible -> marcar como `- [!]` con una nota y continuar
-   d. **Ejecutar el auto-pipeline completo**: Evaluación A-F -> Report .md -> PDF (si score >= 3.0) -> Tracker
-   e. **Mover de "Pendientes" a "Procesadas"**: `- [x] #NNN | URL | Empresa | Rol | Score/5 | PDF sí/no`
+   d. **Ejecutar el auto-pipeline completo**: Evaluación A-F -> Report .md -> PDF (si score >= 70) -> Tracker
+   e. **Mover de "Pendientes" a "Procesadas"**: `- [x] #NNN | URL | Empresa | Rol | Score/100 | PDF sí/no`
 3. **Si hay 3+ URLs pendientes**, lanzar agentes en paralelo (Agent tool con `run_in_background`) para maximizar la velocidad.
 4. **Al final**, mostrar una tabla resumen:
 
@@ -27,8 +27,8 @@ Procesa las URLs de ofertas acumuladas en `data/pipeline.md`. El candidato añad
 - [!] https://private.url/job -- Error: requiere inicio de sesión
 
 ## Procesadas
-- [x] #143 | https://jobs.example.com/posting/789 | Acme S.L. | AI PM | 4.2/5 | PDF sí
-- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 2.1/5 | PDF no
+- [x] #143 | https://jobs.example.com/posting/789 | Acme S.L. | AI PM | 84/100 | PDF sí
+- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 42/100 | PDF no
 ```
 
 > Nota: Las cabeceras de sección pueden estar en EN ("Pending"/"Processed"), ES ("Pendientes"/"Procesadas"), DE ("Offen"/"Verarbeitet") o FR ("En attente"/"Traitées"). Ser flexible al leer, fiel al estilo existente al escribir.

@@ -80,7 +80,7 @@ Per ogni domanda, costruire la risposta seguendo questo schema:
 ```
 ## Risposte per [Azienda] -- [Ruolo]
 
-Base: Report #NNN | Punteggio: X.X/5 | Archetipo: [tipo]
+Base: Report #NNN | Punteggio: XX/100 | Archetipo: [tipo]
 
 ---
 

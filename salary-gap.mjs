@@ -305,7 +305,7 @@ const REPORT_FIXTURE_001 = `# Eval: Acme — ML Eng
 \`\`\`yaml
 company: "Acme"
 role: "ML Eng"
-score: 4.2
+score: 84
 advertised_comp: "80-90k EUR"
 \`\`\`
 `;
@@ -316,7 +316,7 @@ const REPORT_FIXTURE_002 = `# Eval: Globex — Data Eng
 \`\`\`yaml
 company: "Globex"
 role: "Data Eng"
-score: 3.9
+score: 78
 advertised_comp: "100k EUR"
 \`\`\`
 `;
@@ -327,7 +327,7 @@ const REPORT_FIXTURE_004 = `# Eval: Umbrella — AI Eng
 \`\`\`yaml
 company: "Umbrella"
 role: "AI Eng"
-score: 4.1
+score: 82
 advertised_comp: "100k USD"
 \`\`\`
 `;
@@ -338,7 +338,7 @@ const REPORT_FIXTURE_005 = `# Eval: Hooli — AI Lead
 \`\`\`yaml
 company: "Hooli"
 role: "AI Lead"
-score: 3.8
+score: 76
 advertised_comp: "95k"
 \`\`\`
 `;

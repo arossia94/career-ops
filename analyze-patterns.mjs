@@ -245,7 +245,7 @@ function runSelfTest() {
 \`\`\`yaml
 company: "Acme"
 role: "Staff AI Engineer"
-score: 4.4
+score: 88
 legitimacy_tier: "High Confidence"
 archetype: "AI Platform / LLMOps Engineer"
 final_decision: "Apply"
@@ -265,7 +265,7 @@ company_confidential: true
 
   const failures = [];
   if (!summary) failures.push('summary was not parsed');
-  if (summary?.score !== 4.4) failures.push('numeric score was not parsed');
+  if (summary?.score !== 88) failures.push('numeric score was not parsed');
   if (!Array.isArray(summary?.hard_stops) || summary.hard_stops.length !== 0) failures.push('empty list was not parsed');
   if (summary?.soft_gaps?.[0] !== 'No direct healthcare domain experience') failures.push('list item was not parsed');
   if (summary?.next_action !== 'Follow up on ticket #42 with tailored CV') failures.push('hash-containing scalar field was not parsed');
@@ -285,7 +285,7 @@ company_confidential: true
 \`\`\`yaml
 company: "Acme"
 role: "Staff AI Engineer"
-score: 4.4
+score: 88
 legitimacy_tier: "High Confidence"
 risk_summary:
   legitimacy: high_confidence

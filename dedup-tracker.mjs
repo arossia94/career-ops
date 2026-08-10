@@ -246,7 +246,7 @@ function roleMatch(a, b) {
  * Scores may include Markdown bolding or a `/5` suffix. Dedup only needs the
  * numeric part so it can keep the highest-scored duplicate row in a cluster.
  *
- * @param {string} s - Raw score cell such as `4.3/5` or `**4.3/5**`.
+ * @param {string} s - Raw score cell such as `86/100` or `**86/100**`.
  * @returns {number} Parsed score, or 0 when no number is present.
  */
 function parseScore(s) {

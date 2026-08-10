@@ -114,7 +114,7 @@ Salvare la valutazione completa in `reports/{###}-{company-slug}-{YYYY-MM-DD}.md
 
 **Data:** {YYYY-MM-DD}
 **Archetipo:** {rilevato}
-**Punteggio:** {X/5}
+**Punteggio:** {XX/100}
 **URL:** {URL dell'annuncio}
 **PDF:** {percorso del file o in attesa}
 
@@ -139,7 +139,7 @@ Salvare la valutazione completa in `reports/{###}-{company-slug}-{YYYY-MM-DD}.md
 (contenuto completo del blocco F)
 
 ## G) Bozze di risposta per la candidatura
-(solo se punteggio >= 4.5 -- risposte pronte per i moduli del portale aziendale)
+(solo se punteggio >= 70 -- risposte pronte per i moduli del portale aziendale)
 
 ---
 

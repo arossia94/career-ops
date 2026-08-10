@@ -976,19 +976,19 @@ func ComputeProgressMetrics(apps []model.CareerApplication) model.ProgressMetric
 	}
 
 	// Score distribution
-	buckets := [5]int{} // 0: 4.5-5.0, 1: 4.0-4.4, 2: 3.5-3.9, 3: 3.0-3.4, 4: <3.0
+	buckets := [5]int{} // 0: 90-100, 1: 80-89, 2: 70-79, 3: 60-69, 4: <60
 	for _, app := range apps {
 		if app.Score <= 0 {
 			continue
 		}
 		switch {
-		case app.Score >= 4.5:
+		case app.Score >= 90:
 			buckets[0]++
-		case app.Score >= 4.0:
+		case app.Score >= 80:
 			buckets[1]++
-		case app.Score >= 3.5:
+		case app.Score >= 70:
 			buckets[2]++
-		case app.Score >= 3.0:
+		case app.Score >= 60:
 			buckets[3]++
 		default:
 			buckets[4]++

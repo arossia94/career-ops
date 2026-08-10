@@ -151,8 +151,8 @@ En las ofertas y negociaciones en español, ciertos términos no existen en los 
 - Campos libres: indicar el solapamiento horario y la disponibilidad de forma explícita
 
 **En las evaluaciones (scoring):**
-- Dimensión remoto para híbrido fuera de tu país: Score **3.0** (no 1.0)
-- Score 1.0 solo si la oferta dice explícitamente "presencia obligatoria 4-5 días/semana, sin excepciones"
+- Dimensión remoto para híbrido fuera de tu país: Score **60** (no 20)
+- Score 20 solo si la oferta dice explícitamente "presencia obligatoria 4-5 días/semana, sin excepciones"
 
 ### Prioridad time-to-offer
 - Demo funcional + métricas > perfección

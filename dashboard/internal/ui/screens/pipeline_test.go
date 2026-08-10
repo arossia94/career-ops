@@ -29,14 +29,14 @@ func TestWithReloadedDataPreservesStateAndSelection(t *testing.T) {
 			Company:    "Acme",
 			Role:       "Backend Engineer",
 			Status:     "Evaluated",
-			Score:      4.2,
+			Score:      84,
 			ReportPath: "reports/001-acme.md",
 		},
 		{
 			Company:    "Beta",
 			Role:       "Platform Engineer",
 			Status:     "Applied",
-			Score:      4.6,
+			Score:      92,
 			ReportPath: "reports/002-beta.md",
 		},
 	}
@@ -63,7 +63,7 @@ func TestWithReloadedDataPreservesStateAndSelection(t *testing.T) {
 			Company:    "Gamma",
 			Role:       "AI Engineer",
 			Status:     "Interview",
-			Score:      4.8,
+			Score:      96,
 			ReportPath: "reports/003-gamma.md",
 		},
 	}
@@ -103,7 +103,7 @@ func TestRenderAppLineIncludesDateColumn(t *testing.T) {
 		Company: "Anthropic",
 		Role:    "Forward Deployed Engineer",
 		Status:  "Applied",
-		Score:   4.5,
+		Score:   90,
 	}, false)
 
 	if !strings.Contains(line, "2026-04-13") {
@@ -116,10 +116,10 @@ func TestRenderAppLineIncludesDateColumn(t *testing.T) {
 
 func TestSearchFiltersByCompanyRoleAndNotes(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 4.6, Notes: "payments infra"},
-		{Company: "Anthropic", Role: "AI Safety Engineer", Status: "Applied", Score: 4.8, Notes: "policy work"},
-		{Company: "Acme Corp", Role: "Senior PM, Voice AI", Status: "Evaluated", Score: 4.2, Notes: "Series B in Madrid"},
-		{Company: "Globex", Role: "Platform Engineer", Status: "Applied", Score: 3.9, Notes: "remote-first"},
+		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 92, Notes: "payments infra"},
+		{Company: "Anthropic", Role: "AI Safety Engineer", Status: "Applied", Score: 96, Notes: "policy work"},
+		{Company: "Acme Corp", Role: "Senior PM, Voice AI", Status: "Evaluated", Score: 84, Notes: "Series B in Madrid"},
+		{Company: "Globex", Role: "Platform Engineer", Status: "Applied", Score: 78, Notes: "remote-first"},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -156,9 +156,9 @@ func TestSearchFiltersByCompanyRoleAndNotes(t *testing.T) {
 
 func TestSearchComposesWithActiveTab(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 4.6},
-		{Company: "Stripe", Role: "Frontend Engineer", Status: "Applied", Score: 4.5},
-		{Company: "Anthropic", Role: "AI Engineer", Status: "Applied", Score: 4.8},
+		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 92},
+		{Company: "Stripe", Role: "Frontend Engineer", Status: "Applied", Score: 90},
+		{Company: "Anthropic", Role: "AI Engineer", Status: "Applied", Score: 96},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -173,7 +173,7 @@ func TestSearchComposesWithActiveTab(t *testing.T) {
 
 func TestSearchIsCaseInsensitive(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 4.8},
+		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 96},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -188,8 +188,8 @@ func TestSearchIsCaseInsensitive(t *testing.T) {
 
 func TestSearchEnterCommitsAndEscClearsCommittedQuery(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 4.6},
-		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 4.8},
+		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 92},
+		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 96},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -233,9 +233,9 @@ func TestSearchEscInInputCancelsAndClears(t *testing.T) {
 	// but forgets to re-apply the filter — the visible count would stay at 1
 	// otherwise even though the underlying state went stale.
 	apps := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 4.6},
-		{Company: "Globex", Role: "Platform Engineer", Status: "Evaluated", Score: 4.0},
-		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 4.8},
+		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 92},
+		{Company: "Globex", Role: "Platform Engineer", Status: "Evaluated", Score: 80},
+		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 96},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -260,9 +260,9 @@ func TestSearchEscInInputCancelsAndClears(t *testing.T) {
 
 func TestSearchResetsCursorOnQueryChange(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Acme", Role: "Backend Engineer", Status: "Evaluated", Score: 4.0},
-		{Company: "Beta", Role: "Frontend Engineer", Status: "Evaluated", Score: 4.1},
-		{Company: "Gamma", Role: "AI Engineer", Status: "Evaluated", Score: 4.2},
+		{Company: "Acme", Role: "Backend Engineer", Status: "Evaluated", Score: 80},
+		{Company: "Beta", Role: "Frontend Engineer", Status: "Evaluated", Score: 82},
+		{Company: "Gamma", Role: "AI Engineer", Status: "Evaluated", Score: 84},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -281,8 +281,8 @@ func TestSearchResetsCursorOnQueryChange(t *testing.T) {
 
 func TestSearchStatePreservedAcrossReload(t *testing.T) {
 	initial := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend", Status: "Evaluated", Score: 4.6},
-		{Company: "Acme", Role: "AI", Status: "Evaluated", Score: 4.0},
+		{Company: "Stripe", Role: "Backend", Status: "Evaluated", Score: 92},
+		{Company: "Acme", Role: "AI", Status: "Evaluated", Score: 80},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), initial, model.PipelineMetrics{Total: len(initial)}, "..", 120, 40)
@@ -290,7 +290,7 @@ func TestSearchStatePreservedAcrossReload(t *testing.T) {
 	pm.applyFilterAndSort()
 
 	refreshed := append([]model.CareerApplication{}, initial...)
-	refreshed = append(refreshed, model.CareerApplication{Company: "Globex", Role: "Platform", Status: "Applied", Score: 4.3})
+	refreshed = append(refreshed, model.CareerApplication{Company: "Globex", Role: "Platform", Status: "Applied", Score: 86})
 
 	reloaded := pm.WithReloadedData(refreshed, model.PipelineMetrics{Total: len(refreshed)})
 
@@ -308,21 +308,21 @@ func TestRejectedAndDiscardedTabsFilterCorrectly(t *testing.T) {
 			Company:    "Acme",
 			Role:       "Backend Engineer",
 			Status:     "Rejected",
-			Score:      3.4,
+			Score:      68,
 			ReportPath: "reports/001-acme.md",
 		},
 		{
 			Company:    "Beta",
 			Role:       "Platform Engineer",
 			Status:     "Discarded",
-			Score:      2.1,
+			Score:      42,
 			ReportPath: "reports/002-beta.md",
 		},
 		{
 			Company:    "Gamma",
 			Role:       "AI Engineer",
 			Status:     "Applied",
-			Score:      4.6,
+			Score:      92,
 			ReportPath: "reports/003-gamma.md",
 		},
 	}
@@ -355,21 +355,21 @@ func TestRespondedTabFiltersCorrectly(t *testing.T) {
 			Company:    "Acme",
 			Role:       "Backend Engineer",
 			Status:     "Responded",
-			Score:      4.2,
+			Score:      84,
 			ReportPath: "reports/001-acme.md",
 		},
 		{
 			Company:    "Beta",
 			Role:       "Platform Engineer",
 			Status:     "Applied",
-			Score:      3.8,
+			Score:      76,
 			ReportPath: "reports/002-beta.md",
 		},
 		{
 			Company:    "Gamma",
 			Role:       "AI Engineer",
 			Status:     "Interview",
-			Score:      4.6,
+			Score:      92,
 			ReportPath: "reports/003-gamma.md",
 		},
 	}
@@ -410,7 +410,7 @@ func TestRespondedTabSitsBetweenInterviewAndApplied(t *testing.T) {
 // that surfaced as accidental exits when users hit Esc to "back out" of the UI.
 func TestEscWithoutQueryIsNoOp(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 4.6},
+		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 92},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -438,8 +438,8 @@ func TestEscWithoutQueryIsNoOp(t *testing.T) {
 // the load is deferred to commit (Enter) / cancel (Esc) instead.
 func TestSearchTypingDoesNotLoadReports(t *testing.T) {
 	apps := []model.CareerApplication{
-		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 4.6, ReportPath: "reports/001-stripe.md"},
-		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 4.8, ReportPath: "reports/002-anthropic.md"},
+		{Company: "Stripe", Role: "Backend Engineer", Status: "Evaluated", Score: 92, ReportPath: "reports/001-stripe.md"},
+		{Company: "Anthropic", Role: "AI Engineer", Status: "Evaluated", Score: 96, ReportPath: "reports/002-anthropic.md"},
 	}
 
 	pm := NewPipelineModel(theme.NewTheme("catppuccin-mocha"), apps, model.PipelineMetrics{Total: len(apps)}, "..", 120, 40)
@@ -584,21 +584,21 @@ func TestWithReloadedDataPreservesCursorWhenAppRemoved(t *testing.T) {
 			Company:    "Acme",
 			Role:       "Backend Engineer",
 			Status:     "Applied",
-			Score:      4.2,
+			Score:      84,
 			ReportPath: "reports/001-acme.md",
 		},
 		{
 			Company:    "Beta",
 			Role:       "Platform Engineer",
 			Status:     "Applied",
-			Score:      4.6,
+			Score:      92,
 			ReportPath: "reports/002-beta.md",
 		},
 		{
 			Company:    "Gamma",
 			Role:       "AI Engineer",
 			Status:     "Applied",
-			Score:      4.8,
+			Score:      96,
 			ReportPath: "reports/003-gamma.md",
 		},
 	}
@@ -621,7 +621,7 @@ func TestWithReloadedDataPreservesCursorWhenAppRemoved(t *testing.T) {
 			Company:    "Beta",
 			Role:       "Platform Engineer",
 			Status:     "Rejected", // Changed!
-			Score:      4.6,
+			Score:      92,
 			ReportPath: "reports/002-beta.md",
 		},
 		initialApps[2],
@@ -648,7 +648,7 @@ func TestWithReloadedDataPreservesDiscardAndHiredFlow(t *testing.T) {
 			Company:      "Acme",
 			Role:         "Backend Engineer",
 			Status:       "Evaluated",
-			Score:        4.2,
+			Score:        84,
 			ReportPath:   "reports/001-acme.md",
 			ReportNumber: "1",
 		},

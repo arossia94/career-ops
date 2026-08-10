@@ -10,7 +10,7 @@ Elabora gli URL degli annunci accumulati in `data/pipeline.md`. Il candidato agg
    b. **Estrarre l'annuncio** con Playwright (`browser_navigate` + `browser_snapshot`) -> WebFetch -> WebSearch
    c. Se l'URL non è accessibile -> contrassegnarlo come `- [!]` con una nota e passare al successivo
    d. **Auto-pipeline completo**: Valutazione A-F -> Report .md -> PDF (se punteggio >= 3.0) -> Tracker
-   e. **Spostare da "In attesa" a "Elaborati"**: `- [x] #NNN | URL | Azienda | Ruolo | Punteggio/5 | PDF sì/no`
+   e. **Spostare da "In attesa" a "Elaborati"**: `- [x] #NNN | URL | Azienda | Ruolo | Punteggio/100 | PDF sì/no`
 3. **Se ci sono 3+ URL in attesa**, avviare gli agenti in parallelo (strumento Agent con `run_in_background`) per massimizzare la velocità.
 4. **Al termine**, mostrare una tabella riassuntiva:
 
@@ -27,8 +27,8 @@ Elabora gli URL degli annunci accumulati in `data/pipeline.md`. Il candidato agg
 - [!] https://private.url/job -- Errore: richiesto login
 
 ## Elaborati
-- [x] #143 | https://jobs.example.com/posting/789 | Acme SRL | AI PM | 4.2/5 | PDF sì
-- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 2.1/5 | PDF no
+- [x] #143 | https://jobs.example.com/posting/789 | Acme SRL | AI PM | 84/100 | PDF sì
+- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 42/100 | PDF no
 ```
 
 > Nota: Le intestazioni delle sezioni possono essere in inglese ("Pending"/"Processed"), spagnolo ("Pendientes"/"Procesadas"), tedesco ("Offen"/"Verarbeitet"), francese ("En attente"/"Traitees") o italiano ("In attesa"/"Elaborati"). Flessibili in lettura, fedeli allo stile esistente in scrittura.

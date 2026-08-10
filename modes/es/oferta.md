@@ -114,7 +114,7 @@ Guardar la evaluación completa en `reports/{###}-{company-slug}-{YYYY-MM-DD}.md
 
 **Fecha:** {YYYY-MM-DD}
 **Arquetipo:** {detectado}
-**Score:** {X/5}
+**Score:** {XX/100}
 **URL:** {URL de la oferta}
 **PDF:** {ruta o pendiente}
 
@@ -139,7 +139,7 @@ Guardar la evaluación completa en `reports/{###}-{company-slug}-{YYYY-MM-DD}.md
 (contenido completo del bloque F)
 
 ## G) Borradores de respuestas para la candidatura
-(solo si score >= 4.5 -- borradores de respuestas para el formulario de candidatura)
+(solo si score >= 70 -- borradores de respuestas para el formulario de candidatura)
 
 ---
 
@@ -154,7 +154,7 @@ Guardar la evaluación completa en `reports/{###}-{company-slug}-{YYYY-MM-DD}.md
 - Fecha de hoy
 - Empresa
 - Rol
-- Score: media del match (1-5)
+- Score: media del match (0-100)
 - Estado: `Evaluated`
 - PDF: no (o sí si el auto-pipeline generó un PDF)
 - Report: enlace relativo al archivo del report (ej.: `[001](reports/001-company-2026-01-01.md)`)

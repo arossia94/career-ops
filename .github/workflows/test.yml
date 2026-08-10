@@ -45,6 +45,11 @@ jobs:
       # coverage and is green. Restore the upstream line when test-all.mjs is
       # synced and rescaled.
       - run: node --test "tests/**/*.test.mjs"
+      # FORK DELTA: guards this fork's XX/100 scoring convention. A missed
+      # rescale after an upstream sync fails silently (a /5 threshold read on a
+      # 0-100 scale passes everything), so it needs a deterministic check.
+      - name: Score-scale guard (XX/100)
+        run: node validate-score-scale.mjs
       - name: Go dashboard tests
         run: go test ./...
         working-directory: dashboard
