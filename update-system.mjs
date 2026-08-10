@@ -378,6 +378,8 @@ const BOOTSTRAP_PATHS = [
 const USER_PATHS = [
   'cv.md',
   'config/profile.yml',
+  'config/cv-facts.json',
+  'config/benchmarks.yml',
   'modes/_profile.md',
   'modes/_custom.md',
   'modes/_brief.md',
