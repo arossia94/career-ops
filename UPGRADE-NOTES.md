@@ -141,7 +141,26 @@ must not be blind-synced:
 Migrate those into `modes/_custom.md` → Scoring Rules **before** syncing that file.
 The v1.24 `oferta.md:586` already reads that hook.
 
-### 3.4 `templates/cv-template.html`
+### 3.4 `modes/interview-prep.md` — Step 8, the question bank
+
+**Step 8 — Questions previously received** is a fork feature with no upstream
+equivalent. It came from arossia94's `interview_questions_bank` branch (merged to
+`main` in `d88d8b3`) and reads `interview-prep/question-bank.md` to draft 60–120
+second answers into the prep report.
+
+Syncing `modes/interview-prep.md` from upstream **deletes it** — which is exactly
+what happened during this upgrade, and it had to be re-applied by hand. The file
+carries a `FORK ADDITION` comment marking the block.
+
+Related pieces, also fork-only:
+- `interview-prep/question-bank.example` and `story-bank.example` — templates the
+  modes copy on first run. `.gitignore` ignores `interview-prep/*.md` (not `*`)
+  specifically so these `.example` files stay trackable.
+- Story-bank bootstrap lines ("if it does not exist, copy the `.example`") in
+  `modes/interview-prep.md` Step 5, `modes/oferta.md` and `modes/de/angebot.md`.
+- `interview-prep/question-bank.md` in `update-system.mjs` → `USER_PATHS`.
+
+### 3.5 `templates/cv-template.html`
 
 Your own design — Helvetica font stack, from commits `4a4eeae` and `6009772`.
 Not synced. Upstream's version uses CSS custom properties (`:root`, 16 `var(--)`)
@@ -153,7 +172,7 @@ block is inert — and `tests/theme-style.test.mjs` fails on that one assertion.
 Not a bug; a documented trade-off. To gain theming later, port the Helvetica
 choice into upstream's `--font-family` token rather than swapping templates.
 
-### 3.5 `.github/workflows/test.yml`
+### 3.6 `.github/workflows/test.yml`
 
 Three fork deltas, each commented in the file:
 - **`test` job** runs `node --test "tests/**/*.test.mjs"` instead of
@@ -166,7 +185,7 @@ Three fork deltas, each commented in the file:
 - **`upgrade-gate` job** omitted — needs release tags, which this fork has none of.
 - Plus a **score-scale guard** step added.
 
-### 3.6 Other
+### 3.7 Other
 
 - `modes/_custom.md` holds the fork's house rules (see §4).
 - `config/profile.yml` pins `auto_pdf_score_threshold: 70` and
@@ -264,7 +283,7 @@ no test catches it. This nearly happened to `gemini-eval.mjs`.
 
 | Check | Status | Cause |
 |---|---|---|
-| `tests/user-layer-gitignored.test.mjs` | 🔴 1 of 115 suites | **Decision 1.4** — `modes/_custom.md` and `data/` are declared user-layer in AGENTS.md but not gitignored. A policy question, not a defect |
+| `tests/user-layer-gitignored.test.mjs` | ✅ **resolved** | Decision 1.4 answered — see §8. **115/115 suites now pass** |
 | `node verify-pipeline.mjs` | 🔴 exit 1 | 3 pre-existing errors: tracker rows #51/#52/#64 reference report files absent from disk. Plus 3 orphan reports (#38, #66, #105). Predates this upgrade |
 | `tests/theme-style.test.mjs` | 🔴 1 assertion | `templates/cv-template.html` has no `:root`/`var(--)` tokens — the documented trade-off in §3.4 |
 | `validate-untrusted-content-coverage.mjs` | 🔴 2 files | `modes/oferta.md` and `auto-pipeline.md` lack the "Untrusted External Content" directive — they are the v1.7 rollbacks. The rule still applies via `AGENTS.md` and `_shared.md`; what is missing is upstream's per-mode restatement |
@@ -282,37 +301,49 @@ Everything else is green: **114/115 node suites**, all 4 Go dashboard packages,
 
 ### Decisions
 
-- [ ] **User-data privacy policy (decision 1.4)** — *does this fork keep committing
-      personal data to git?* This is the only item holding CI red, and the only one
-      that is hard to reverse.
+- [x] **User-data privacy policy (decision 1.4) — RESOLVED 2026-08-10.**
+      Adopted upstream's policy: the user layer is gitignored, and only
+      scaffolding and templates are tracked.
 
-      Currently gitignored: `cv.md`, `config/profile.yml`, `modes/_profile.md`,
-      `article-digest.md`, `portals.yml`, `reports/`, `output/`, `interview-prep/`,
-      `data/applications.md`, `data/pipeline.md`.
+      `.gitignore` now uses upstream's contents-ignored / scaffolding-kept
+      pattern:
+      ```
+      data/*                       config/cv-facts.json
+      !data/.gitkeep               config/benchmarks.yml
+      !data/offers/  (+ outcomes/, upskill/, each with .gitkeep)
+      modes/_custom.md
+      modes/_brief.md
+      ```
 
-      **Tracked but declared user-layer:** `modes/_custom.md` and `data/` — which
-      includes `data/contacts.tsv` (recruiter names, emails, phones — third-party
-      PII), `data/offers/` (contracts, comp), `modes/_brief.md` (comp floor, DQ
-      criteria) and `interview-prep/story-bank.md`. All are empty or near-empty
-      **today**, which is exactly why deciding now is cheap.
+      **17 files untracked** with `git rm --cached` (all kept on disk):
+      `data/contacts.tsv` (third-party PII), `data/blacklist.md`,
+      `active-interviews.md`, `salary-observations.tsv`, `status-log.tsv`,
+      `assessments.tsv`, `agent-inbox.md`, `reply-candidates.json`,
+      `applications.db`, `pdf-index.tsv`, `portal-health.tsv`,
+      `scan-runs.tsv`, `config/cv-facts.json`, `config/benchmarks.yml`,
+      `modes/_custom.md`, `modes/_brief.md`, and
+      `interview-prep/story-bank.md`.
 
-      Options:
-      - **(a) Adopt upstream's policy.** Append to `.gitignore`:
-        ```
-        modes/_custom.md
-        modes/_brief.md
-        data/
-        ```
-        then untrack without deleting:
-        ```
-        git rm --cached -r --ignore-unmatch modes/_custom.md modes/_brief.md data/
-        ```
-        CI goes green. Note `git rm --cached` stops *future* commits; anything
-        already pushed stays in history.
-      - **(b) Keep committing** and remove `tests/user-layer-gitignored.test.mjs`
-        from the suite.
-      - **(c) Split** — ignore only `data/contacts.tsv`, `data/offers/`,
-        `data/outcomes/`, `modes/_brief.md`; keep the rest tracked.
+      That last one needed an explicit `git rm --cached`: **a `.gitignore`
+      rule has no effect on an already-tracked file**, so `story-bank.md`
+      kept being committed despite `interview-prep/*.md` matching it. Worth
+      remembering for any future ignore rule.
+
+      Still tracked, correctly: `data/.gitkeep` and the three subdirectory
+      `.gitkeep` files (so a fresh clone gets the folders),
+      `interview-prep/story-bank.example`, `question-bank.example`, and the
+      `modes/*.template.md` files.
+
+      ⚠️ **Two consequences.**
+      1. `modes/_custom.md` (house rules, CV verification checklist, naming
+         convention) and `modes/_brief.md` (comp floor, DQ criteria) now live
+         **on disk only**. Include them in whatever backs up `cv.md` and
+         `config/profile.yml`.
+      2. History is **not** rewritten. Files committed earlier — `_custom.md`
+         in `389f797`, the `data/` scaffolds in `5c5bbad`, `scan-runs.tsv` in
+         `2e7c867` — remain in history. They were empty or near-empty
+         scaffolds at the time, so nothing sensitive is exposed; scrubbing
+         would be a separate `git filter-repo` job.
 
 - [ ] **Story 3.10 — re-sync the evaluation core.** `oferta.md` (216 → 611 lines),
       `auto-pipeline.md` (71 → 100), `ofertas.md`. All blockers cleared; 6 rescales
@@ -369,9 +400,11 @@ Everything else is green: **114/115 node suites**, all 4 Go dashboard packages,
 
 - [ ] **Clear `.update-dismissed`** if you want session-start update checks back.
 
-- [ ] **Open the PR** `update_to_1.24.0` → `main`. Gated by decision 1.4: with CI
-      red, the PR either cannot merge under branch protection or merges with a
-      known-failing check. Make that a choice, not an accident.
+- [ ] **Open the PR** `update_to_1.24.0` → `main`. No longer gated — decision 1.4
+      is resolved and CI is green (115/115 suites). Note the branch is based on
+      `3799e59`; `main` has since advanced to `d88d8b3`, whose changes were
+      reconciled by hand (commit `9413e76` plus the Step 8 / `.example`
+      re-application), so the merge should be clean.
 
 ---
 
