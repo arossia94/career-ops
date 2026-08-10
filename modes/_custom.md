@@ -74,6 +74,29 @@ and report the result. Do not present a CV as finished until they pass.
   and machine summaries all use `XX/100`. The apply/discourage threshold is
   **70/100**. If any instruction you have loaded says `/5`, this rule wins.
 
+- **Generated CV filename.** Always write CVs to a flat `output/` path using:
+
+  ```
+  output/CV-{candidate}-{company}-{DD_MM_YY}.pdf
+  output/CV-{candidate}-{company}-{role}-{DD_MM_YY}.pdf   ← multi-role companies
+  ```
+
+  Rules:
+  - `{candidate}` and `{company}` in **Snake_Case** (e.g. `Federico_Baravalle`,
+    `Agility_Robotics`). Uppercase `CV-` prefix.
+  - `{DD_MM_YY}` — day, month, two-digit year (e.g. `26_07_26`).
+  - **Add `{role}` whenever this company already has another application in
+    `data/applications.md`**, so multiple roles at one employer stay
+    distinguishable (e.g. `CV-Federico_Baravalle-Apptronik-Senior_ME-30_07_26.pdf`).
+    Keep the role short and in Snake_Case.
+  - The same stem applies to the intermediate `/tmp` HTML/JSON, the `.tex` in
+    `latex` mode, and the Canva export (which appends `-canva`).
+
+  This takes precedence over the bundle layout in `modes/pdf.md`
+  (`cv/tailored/vNNN/cv.pdf`) and over the ISO-dated `cv-…` form in
+  `modes/latex.md`. Bundle artifacts may still be created for JD-similarity
+  reuse tracking; the deliverable PDF goes to the flat `output/` path above.
+
 ## Off-Limits
 
 - Never auto-fill or submit an application without showing me first.

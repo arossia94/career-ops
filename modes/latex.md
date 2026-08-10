@@ -14,9 +14,9 @@ Export a tailored, ATS-optimized CV as a `.tex` file and compile it to PDF via `
 8. Select top 3-4 most relevant projects for the offer, and populate `awards[]` from `cv.md`'s Awards / Honors section when it has entries that support the role (omit the key otherwise — the section is dropped, header included; never invent an award)
 9. Reorder experience bullets by JD relevance
 10. Inject keywords naturally into existing achievements
-11. Build a JSON payload (see schema below) and write to `/tmp/cv-{candidate}-{company}.json`
-12. Run: `node build-cv-latex.mjs /tmp/cv-{candidate}-{company}.json output/cv-{candidate}-{company}-{YYYY-MM-DD}.tex`
-13. Run: `node generate-latex.mjs output/cv-{candidate}-{company}-{YYYY-MM-DD}.tex output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf`
+11. Build a JSON payload (see schema below) and write to `/tmp/CV-{candidate}-{company}[-{role}].json`
+12. Run: `node build-cv-latex.mjs /tmp/CV-{candidate}-{company}[-{role}].json output/CV-{candidate}-{company}[-{role}]-{DD_MM_YY}.tex`
+13. Run: `node generate-latex.mjs output/CV-{candidate}-{company}[-{role}]-{DD_MM_YY}.tex output/CV-{candidate}-{company}[-{role}]-{DD_MM_YY}.pdf`
     *(Replace `{candidate}`, `{company}`, `{YYYY-MM-DD}` with actual values.)*
 14. Report: .tex path, .pdf path, file sizes, section count, keyword coverage %
 

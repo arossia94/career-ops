@@ -30,6 +30,9 @@ const SKIP_PREFIX = [
   'node_modules/', '.git/', 'reports/', 'output/', 'batch/logs/',
   'batch/tracker-additions/', 'FEEDBACK/', 'COMPARISON.md', 'CHANGELOG.md',
   'test-fixtures/', 'data/',
+  // This file necessarily contains every pattern it searches for, in both its
+  // regexes and its documentation. Scanning itself is guaranteed noise.
+  'validate-score-scale.mjs',
 ];
 
 // Patterns that look like a /5 score but are not one. Each entry must say why,
