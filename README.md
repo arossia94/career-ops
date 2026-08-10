@@ -104,6 +104,7 @@ claude   # Open Claude Code in this directory
 # "Translate the modes to English"
 # "Add these 5 companies to portals.yml"
 # "Update my profile with this CV I'm pasting"
+# "Add these questions that I received in an interview to the question bank"
 
 # 6. Start using
 # Paste a job URL or run /career-ops
@@ -176,6 +177,7 @@ Career-ops is a single slash command with multiple modes:
 /career-ops deep           → Deep company research
 /career-ops training       → Evaluate a course/cert
 /career-ops project        → Evaluate a portfolio project
+/career-ops interview-prep → Generate company-specific interview prep doc
 ```
 
 Or just paste a job URL or description directly -- career-ops auto-detects it and runs the full pipeline.
@@ -289,6 +291,7 @@ career-ops/
 ├── data/                        # Your tracking data (gitignored)
 ├── reports/                     # Evaluation reports (gitignored)
 ├── output/                      # Generated PDFs (gitignored)
+├── interview-prep/              # Files to help you navigate interviews (gitignored)
 ├── fonts/                       # Space Grotesk + DM Sans
 ├── docs/                        # Setup, customization, architecture
 └── examples/                    # Sample CV, report, proof points
