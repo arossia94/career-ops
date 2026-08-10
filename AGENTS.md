@@ -87,7 +87,8 @@ AI-powered, CLI-agnostic job search automation: pipeline tracking, offer evaluat
 | `templates/cv-template.html` | HTML template for CVs |
 | `templates/cv-template.tex` | LaTeX/Overleaf template for CVs |
 | `article-digest.md` | Compact proof points from portfolio (optional) |
-| `interview-prep/story-bank.md` | Accumulated STAR+R stories |
+| `interview-prep/story-bank.md` | Accumulated STAR+R stories across evaluations. Created on first run from story-bank.example |
+| `interview-prep/question-bank.md` | File where to store the questions asked during previous interviews. Created on first run from question-bank.example |
 | `interview-prep/{company}-{role}.md` | Company-specific interview intel |
 | `generate-pdf.mjs` | Playwright: HTML to PDF |
 | `generate-latex.mjs` | LaTeX CV validator + pdflatex compiler |

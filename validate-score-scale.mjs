@@ -33,6 +33,8 @@ const SKIP_PREFIX = [
   // This file necessarily contains every pattern it searches for, in both its
   // regexes and its documentation. Scanning itself is guaranteed noise.
   'validate-score-scale.mjs',
+  // Documents the XX/100 convention, so it quotes the /5 forms it replaced.
+  'UPGRADE-NOTES.md',
 ];
 
 // Patterns that look like a /5 score but are not one. Each entry must say why,

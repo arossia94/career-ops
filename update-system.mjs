@@ -378,6 +378,8 @@ const BOOTSTRAP_PATHS = [
 const USER_PATHS = [
   'cv.md',
   'config/profile.yml',
+  'UPGRADE-NOTES.md',
+  'validate-score-scale.mjs',
   'config/cv-facts.json',
   'config/benchmarks.yml',
   'modes/_profile.md',
@@ -386,7 +388,8 @@ const USER_PATHS = [
   'voice-dna.md',
   'portals.yml',
   'article-digest.md',
-  'interview-prep/',
+  'interview-prep/story-bank.md',
+  'interview-prep/question-bank.md',
   'data/',
   'reports/',
   'output/',
