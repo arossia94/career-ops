@@ -283,7 +283,7 @@ no test catches it. This nearly happened to `gemini-eval.mjs`.
 
 | Check | Status | Cause |
 |---|---|---|
-| `tests/user-layer-gitignored.test.mjs` | ✅ **resolved** | Decision 1.4 answered — see §8. **115/115 suites now pass** |
+| `tests/user-layer-gitignored.test.mjs` | ✅ passes | Green since the `.gitignore` rules landed — it checks directory-level ignore rules, not whether individual files are tracked. So it passes even though the user layer is still committed. Decision 1.4 is only half done — see §8 |
 | `node verify-pipeline.mjs` | 🔴 exit 1 | 3 pre-existing errors: tracker rows #51/#52/#64 reference report files absent from disk. Plus 3 orphan reports (#38, #66, #105). Predates this upgrade |
 | `tests/theme-style.test.mjs` | 🔴 1 assertion | `templates/cv-template.html` has no `:root`/`var(--)` tokens — the documented trade-off in §3.4 |
 | `validate-untrusted-content-coverage.mjs` | 🔴 2 files | `modes/oferta.md` and `auto-pipeline.md` lack the "Untrusted External Content" directive — they are the v1.7 rollbacks. The rule still applies via `AGENTS.md` and `_shared.md`; what is missing is upstream's per-mode restatement |
@@ -301,12 +301,10 @@ Everything else is green: **114/115 node suites**, all 4 Go dashboard packages,
 
 ### Decisions
 
-- [x] **User-data privacy policy (decision 1.4) — RESOLVED 2026-08-10.**
-      Adopted upstream's policy: the user layer is gitignored, and only
-      scaffolding and templates are tracked.
+- [ ] **User-data privacy policy (decision 1.4) — HALF DONE, needs a call.**
 
-      `.gitignore` now uses upstream's contents-ignored / scaffolding-kept
-      pattern:
+      `.gitignore` now carries the rules (upstream's contents-ignored /
+      scaffolding-kept pattern):
       ```
       data/*                       config/cv-facts.json
       !data/.gitkeep               config/benchmarks.yml
@@ -315,35 +313,39 @@ Everything else is green: **114/115 node suites**, all 4 Go dashboard packages,
       modes/_brief.md
       ```
 
-      **17 files untracked** with `git rm --cached` (all kept on disk):
-      `data/contacts.tsv` (third-party PII), `data/blacklist.md`,
-      `active-interviews.md`, `salary-observations.tsv`, `status-log.tsv`,
-      `assessments.tsv`, `agent-inbox.md`, `reply-candidates.json`,
-      `applications.db`, `pdf-index.tsv`, `portal-health.tsv`,
-      `scan-runs.tsv`, `config/cv-facts.json`, `config/benchmarks.yml`,
-      `modes/_custom.md`, `modes/_brief.md`, and
-      `interview-prep/story-bank.md`.
+      ⚠️ **But the files are still TRACKED.** A `.gitignore` rule has no effect
+      on a file git already tracks, so `config/`, `data/`, `modes/_custom.md`,
+      `modes/_brief.md` and `interview-prep/story-bank.md` continue to be
+      committed exactly as before. The repository currently says "private" in
+      `.gitignore` while still versioning the user layer.
 
-      That last one needed an explicit `git rm --cached`: **a `.gitignore`
-      rule has no effect on an already-tracked file**, so `story-bank.md`
-      kept being committed despite `interview-prep/*.md` matching it. Worth
-      remembering for any future ignore rule.
+      Untracking needs an explicit `git rm --cached`. That was applied on
+      2026-08-10 and then deliberately reverted: git renders the operation as
+      `D` in `git status` — visually identical to a real deletion — and that is
+      not a state to leave in a working tree unexamined. Every file survived;
+      the index was restored to match `9413e76`.
 
-      Still tracked, correctly: `data/.gitkeep` and the three subdirectory
-      `.gitkeep` files (so a fresh clone gets the folders),
-      `interview-prep/story-bank.example`, `question-bank.example`, and the
-      `modes/*.template.md` files.
+      Pick one before opening the PR:
+      - **(a) Finish option (a)** — ignore *and* untrack:
+        ```
+        git rm --cached -r --ignore-unmatch \
+          modes/_custom.md modes/_brief.md interview-prep/story-bank.md \
+          config/cv-facts.json config/benchmarks.yml \
+          $(git ls-files data/ | grep -v '\.gitkeep$')
+        ```
+        Files stay on disk. Note this makes `_custom.md` (house rules, CV
+        verification checklist, filename convention) and `_brief.md` (comp
+        floor, DQ criteria) **disk-only** — put them in the same backup as
+        `cv.md` and `config/profile.yml`.
+      - **(b) Keep committing everything** — revert the `.gitignore` additions
+        so the file stops contradicting the actual behaviour.
+      - **(c) Split** — untrack only the third-party PII and comp data
+        (`data/contacts.tsv`, `data/offers/`, `modes/_brief.md`); keep the rest
+        tracked.
 
-      ⚠️ **Two consequences.**
-      1. `modes/_custom.md` (house rules, CV verification checklist, naming
-         convention) and `modes/_brief.md` (comp floor, DQ criteria) now live
-         **on disk only**. Include them in whatever backs up `cv.md` and
-         `config/profile.yml`.
-      2. History is **not** rewritten. Files committed earlier — `_custom.md`
-         in `389f797`, the `data/` scaffolds in `5c5bbad`, `scan-runs.tsv` in
-         `2e7c867` — remain in history. They were empty or near-empty
-         scaffolds at the time, so nothing sensitive is exposed; scrubbing
-         would be a separate `git filter-repo` job.
+      Either way, history is **not** rewritten. Files committed earlier were
+      empty or near-empty scaffolds, so nothing sensitive is exposed; scrubbing
+      would be a separate `git filter-repo` job.
 
 - [ ] **Story 3.10 — re-sync the evaluation core.** `oferta.md` (216 → 611 lines),
       `auto-pipeline.md` (71 → 100), `ofertas.md`. All blockers cleared; 6 rescales
@@ -356,17 +358,53 @@ Everything else is green: **114/115 node suites**, all 4 Go dashboard packages,
       Helvetica design; syncing gains `theme-style.mjs` theming. Middle path: port
       the Helvetica choice into upstream's `--font-family` token.
 
-- [ ] **`test-all.mjs`** — deferred. Upstream's is 13,142 lines with 149 `/5`
-      fixtures, mutates the tracker, and largely duplicates the `tests/` tree.
-      Revisit only if CI needs it.
+- [ ] **`test-all.mjs` — ⚠️ DO NOT RUN IT AS-IS. Fixes issue
+      [arossia94/career-ops#30](https://github.com/arossia94/career-ops/issues/30).**
+
+      Our copy is the v1.7 version (331 lines). Its `scripts` array (~line 65)
+      executes `normalize-statuses.mjs`, `dedup-tracker.mjs` and
+      `merge-tracker.mjs` **for real, against the live `data/applications.md`** —
+      no `--dry-run`, no fixture copy. That is a DATA_CONTRACT violation, and a
+      silent one: the suite reports green while rows move into a `.bak` file.
+
+      **Status of issue #30, verified 2026-08-10:**
+      - *Row-deletion half — already fixed.* The v1.24 `dedup-tracker.mjs`
+        (synced in `5ecfc4a`, carrying upstream's #1458 "require exact
+        company+role match") removed **0 of 108 rows** when run against a
+        sandbox copy of the real tracker. The specific rows the issue reported
+        as lost — the Intuitive "Senior/Sr. Mechanical Design Engineer …"
+        cluster and the Boston Dynamics Atlas postings — all survive. Today's
+        tracker has 15 Apptronik, 11 Intuitive and 5 Tesla rows and none were
+        touched.
+      - *Live-mutation half — still open here.* Only `test-all.mjs` is at fault.
+
+      **The fix is three flags, not a 13k-line sync.** All three scripts already
+      support `--dry-run` (verified by running `node dedup-tracker.mjs --dry-run`
+      → "(dry-run — no changes written)"), and upstream's v1.24 `test-all.mjs`
+      does exactly this, with a comment describing this same failure:
+      ```
+      { name: 'normalize-statuses.mjs --dry-run', expectExit: 0 },
+      { name: 'dedup-tracker.mjs --dry-run',      expectExit: 0 },
+      { name: 'merge-tracker.mjs --dry-run',      expectExit: 0 },
+      ```
+      Worth also marking `verify-pipeline.mjs` as `allowFail: true`: it is
+      read-only, but the v1.24 script correctly exits 1 on the three real data
+      errors, which a v1.7 harness reports as "crashed".
+
+      Until that lands: run it only in a throwaway copy —
+      `cp -R . /tmp/co-test && cd /tmp/co-test && node test-all.mjs --quick` —
+      and remember the v1.7-harness-vs-v1.24-scripts failures are noise. The
+      `tests/` tree (115/115, and what CI actually runs) is the real coverage.
+
+      Syncing upstream's full `test-all.mjs` remains deferred: 13,142 lines with
+      149 `/5` fixtures to rescale, and it largely duplicates `tests/`.
 
 - [ ] **`data/scan-history.tsv`** — ours is 7 columns with no header; v1.24 writes
       11 with one. Additive, so old rows keep parsing. Recommendation: leave it.
 
 ### Tasks
 
-- [ ] **Add `.playwright-mcp/` to `.gitignore`** — browser-session artifacts,
-      currently untracked noise.
+- [x] **Add `.playwright-mcp/` to `.gitignore`** — done 2026-08-10.
 
 - [ ] **Update `docs/ARCHITECTURE.md`, `CUSTOMIZATION.md`, `SETUP.md`, `SCRIPTS.md`.**
       All four exist here at v1.7 and now describe a system that has changed
@@ -394,11 +432,13 @@ Everything else is green: **114/115 node suites**, all 4 Go dashboard packages,
       on disk; #38/#66/#105 are orphan reports. `verify-pipeline` exits 1 until
       then, and other tooling respects that gate.
 
-- [ ] **Delete `COMPARISON.md`** once this document supersedes it. It no longer
-      represents outstanding work — most remaining rows are deliberate exclusions
-      or files that differ *because* of the maintained deltas above.
+- [x] **Delete `COMPARISON.md`** — done in `d0d15fd`. Recoverable with
+      `git show 744f33a:COMPARISON.md` if the original row list is ever needed.
 
-- [ ] **Clear `.update-dismissed`** if you want session-start update checks back.
+- [x] **Clear `.update-dismissed`** — done 2026-08-10. `update-system.mjs check`
+      now returns `{"status":"up-to-date","local":"1.24.0","remote":"1.7.0"}`: this
+      branch is ahead of `arossia94/main`, so no update is offered. That flips to a
+      real check once this work is merged.
 
 - [ ] **Open the PR** `update_to_1.24.0` → `main`. No longer gated — decision 1.4
       is resolved and CI is green (115/115 suites). Note the branch is based on
