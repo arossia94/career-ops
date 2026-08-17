@@ -1,18 +1,19 @@
 # Mode: interview-prep — Company-Specific Interview Intelligence
 
-When the user asks to prep for an interview at a specific company+role, or when an evaluation scores 70+ and the user updates status to `Interview`, run this mode.
+When the user asks to prep for an interview at a specific company+role, or when an evaluation scores 50+ and the user updates status to `Interview`, run this mode.
 
 ## Inputs
 
 1. **Company name** and **role title** (required)
 2. **Evaluation report** in `reports/` (if exists) — read for archetype, gaps, matched proof points
 3. **Story bank** at `interview-prep/story-bank.md` — read for existing prepared stories
-4. **CV** at `cv.md` + `article-digest.md` — read for proof points
-5. **Profile** at `config/profile.yml` + `modes/_profile.md` — read for candidate context
-6. **Recruiter-side risk map** from the evaluation/PDF/application flow if present — use `modes/heuristics/recruiter-side.md` for the risk categories the interview process must resolve
-7. **Coffee chat notes** for this company, if the user has any (optional — see "Coffee Chat Cross-Reference" below)
-8. **Prior stated compensation** — if the tracker# is known, run `node salary-gap.mjs --stated-for <tracker#>` (zero tokens). Any prior `stated` observation is a number already committed to a specific interviewer in an earlier round — surface it in the Process Overview (Step 2) or Recruiter/HR pack (Step 4) as a "already discussed" reminder so the candidate stays consistent.
-9. **HM audit** — the evaluation report's `## HM Audit` section, if present (written by `modes/pdf/hm-audit.md`). It carries the reviewer persona, the sources behind it, and which CV bullets that reviewer would have cut. Reuse it rather than re-researching the hiring manager from scratch.
+4. **Previous questions** at `interview-prep/question-bank.md` - list of relevant questions received by the user in previous interviews (optional, see Step 8 below)
+5. **CV** at `cv.md` + `article-digest.md` — read for proof points
+6. **Profile** at `config/profile.yml` + `modes/_profile.md` — read for candidate context
+7. **Recruiter-side risk map** from the evaluation/PDF/application flow if present — use `modes/heuristics/recruiter-side.md` for the risk categories the interview process must resolve
+8. **Coffee chat notes** for this company, if the user has any (optional — see "Coffee Chat Cross-Reference" below)
+9. **Prior stated compensation** — if the tracker# is known, run `node salary-gap.mjs --stated-for <tracker#>` (zero tokens). Any prior `stated` observation is a number already committed to a specific interviewer in an earlier round — surface it in the Process Overview (Step 2) or Recruiter/HR pack (Step 4) as a "already discussed" reminder so the candidate stays consistent.
+10. **HM audit** — the evaluation report's `## HM Audit` section, if present (written by `modes/pdf/hm-audit.md`). It carries the reviewer persona, the sources behind it, and which CV bullets that reviewer would have cut. Reuse it rather than re-researching the hiring manager from scratch.
 
 ## Coffee Chat Cross-Reference (optional, North America-specific)
 
