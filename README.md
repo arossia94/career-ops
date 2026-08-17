@@ -1,15 +1,22 @@
-# Career-Ops
+# AEIB Career-Ops
+
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/wordmark-dark.svg"><img src="docs/wordmark-light.svg" alt="career-ops" width="250" height="56"></picture></p>
+
+<div align="center">
+
+<p align="center"><picture><img src="docs/aeib_logo.png" alt="career-ops" width="250" height="56"></picture></p>
+
+<div align="center">
+
 
 [English](README.md) | [Español](README.es.md) |
 
 <p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="Career-Ops — Multi-Agent Job Search System" width="800"></a>
+  <em> The IB gave you the knowledge to smash any hiring process. AEIB Career-Ops gives you the key to enter in the hiring process .</em>
 </p>
 
 <p align="center">
-  <em>I spent months applying to jobs the hard way. So I engineered the system I wish I had.</em><br>
-  Companies use AI to filter candidates. <strong>I just gave candidates AI to <em>choose</em> companies.</strong><br>
-  <em>Now it's open source.</em>
+  <em> This is an IB Alumni-tailored spin-off of the original [career-ops](https://github.com/santifer/career-ops), to be distributed via the IB Alumni Association (AEIB).</em>
 </p>
 
 <p align="center">
