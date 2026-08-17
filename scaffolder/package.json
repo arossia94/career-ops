@@ -1,5 +1,5 @@
 {
-  "name": "@santifer/career-ops",
+  "name": "@arossia94/career-ops",
   "version": "1.24.0",
   "private": true,
   "description": "One-command installer for career-ops — the AI-powered job search pipeline built on Claude Code.",
@@ -24,14 +24,17 @@
     "cli"
   ],
   "author": "Santiago Fernández de Valderrama <hi@santifer.io> (https://santifer.io)",
-  "homepage": "https://github.com/santifer/career-ops#readme",
+  "contributors": [
+    "Federico Baravalle <baravalle.fede@gmail.com> (https://fbaravalle.com)",
+    "Alejo N. Rossia <alejo.r94@gmail.com> (https://www.linkedin.com/in/alejo-rossia-2a1881225/)"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/santifer/career-ops.git",
+    "url": "git+https://github.com/arossia94/career-ops.git",
     "directory": "scaffolder"
   },
   "bugs": {
-    "url": "https://github.com/santifer/career-ops/issues"
+    "url": "https://github.com/arossia94/career-ops/issues"
   },
   "license": "MIT",
   "dependencies": {}
