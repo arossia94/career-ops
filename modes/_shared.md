@@ -64,18 +64,18 @@ The evaluation uses 6 blocks (A-F) with a global score of 0-100:
 
 | Dimension | What it measures |
 |-----------|-----------------|
-| Match con CV | Skills, experience, proof points alignment |
+| CV match | Skills, experience, proof points alignment |
 | North Star alignment | How well the role fits the user's target archetypes (from _profile.md) |
 | Comp | Salary vs market (81-100=top quartile, 0-20=well below) |
 | Cultural signals | Company culture, growth, stability, remote policy |
 | Red flags | Blockers, warnings (negative adjustments) |
-| **Global** | Holistic judgment integrating the five dimensions above (no arithmetic formula) |
+| **Global** | Weighted average of above |
 
 **Score interpretation:**
 - 90+ → Strong match, recommend applying immediately
-- 80-89 → Good match, worth applying
-- 70-79 → Decent but not ideal, apply only if specific reason
-- Below 70 → Recommend against applying (see Ethical Use in AGENTS.md)
+- 70-89 → Good match, worth applying
+- 50-69 → Decent but not ideal, apply only if specific reason
+- Below 50 → Recommend against applying (see Ethical Use in AGENTS.md)
 
 **How to score the "Cultural signals" dimension:**
 1. Read `culture_screen.require` from `config/profile.yml`. If `culture_screen` is missing or empty, skip the structural capping and score the dimension qualitatively based on company size, remote policy, and stability.
