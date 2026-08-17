@@ -9,7 +9,7 @@
 <div align="center">
 
 
-[English](README.md) | [Español](README.es.md) |
+[English](README.md) | [Español](README.es.md)
 
 <p align="center">
   <em> The IB gave you the knowledge to smash any hiring process. AEIB Career-Ops gives you the key to enter in the hiring process .</em>
