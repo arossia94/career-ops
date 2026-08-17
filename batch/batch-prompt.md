@@ -11,7 +11,7 @@ You receive a job URL plus a local JD text file and must produce:
 3. One tracker TSV line for `merge-tracker.mjs`
 4. A final JSON summary on stdout for the batch orchestrator
 
-**Important:** This prompt is self-contained. Do not depend on any slash command, skill, or external mode file at runtime.
+**Important:** This prompt is self-contained. Does not depend on any slash command, skill, or external mode file at runtime.
 
 ---
 
