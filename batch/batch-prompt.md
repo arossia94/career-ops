@@ -34,7 +34,7 @@ Before writing any user-visible prose, read `config/profile.yml` if it exists.
 Examples:
 
 - `language.output: en` + `language.modes_dir: modes/de` → write the report in English, using DACH market concepts where relevant.
-- Missing `language.output` → write in English.
+- Missing `language.output` → write in the language of the JD. If that is not supported, write in English.
 
 ---
 
