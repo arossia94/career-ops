@@ -100,7 +100,7 @@ Run these steps in order.
 
 Read `cv.md`, `article-digest.md`, `llms.txt`, `modes/_profile.md`, and `config/profile.yml`. Then complete every block below.
 
-#### Step 0 — Archetype Detection
+#### Step 3 — Archetype Detection
 
 Classify the role as one or two closest archetypes:
 

@@ -96,7 +96,7 @@ Resolved in v1:
 - **Reference labels** — frozen reference (Claude-tier) verdict; see **Labeling
   methodology** above. Hand-curation is the documented future upgrade path.
 - **Set size / spread** — grown from 2 to 10 cases across all 6 archetypes, favoring
-  edge/hybrid archetypes, scores spanning 3.2–4.3.
+  edge/hybrid archetypes, scores spanning 64–86.
 
 Still tunable (named constants, safe defaults today):
 
@@ -110,3 +110,9 @@ Wiring this into the required CI job (`.github/workflows/test.yml`) is intention
 deferred until the gate threshold is confirmed, so a default value can't make `main`
 go red. The replay path is deterministic and $0, so it is ready to wire whenever the
 threshold is signed off.
+
+## AEIB Customization To-Do:
+
+We should find typical archetypes and template CVs that reflect the experience of IB alumni and the roles they might apply for,
+and use those examples as tuning points. It would be great to have the JDs (at least approximate) of real jobs that IB alumni
+have applied for and use those as training.
