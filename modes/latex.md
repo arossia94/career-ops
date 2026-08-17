@@ -10,7 +10,7 @@ Export a tailored, ATS-optimized CV as a `.tex` file and compile it to PDF via `
 4. Extract 15-20 keywords from the JD
 5. Detect JD language → CV language (EN default)
 6. Detect role archetype → adapt framing
-7. Rewrite Professional Summary injecting JD keywords (same rules as `pdf` mode — NEVER invent skills)
+7. Rewrite Professional Summary injecting JD keywords (same rules as `pdf` mode — NEVER invent skills) and mentioning relevant projects from portfolio (NEVER invent projects)
 8. Select top 3-4 most relevant projects for the offer, and populate `awards[]` from `cv.md`'s Awards / Honors section when it has entries that support the role (omit the key otherwise — the section is dropped, header included; never invent an award)
 9. Reorder experience bullets by JD relevance
 10. Inject keywords naturally into existing achievements
