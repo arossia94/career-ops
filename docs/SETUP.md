@@ -31,6 +31,7 @@ Create `cv.md` in the project root with your full CV in markdown format. This is
 
 (Optional) Create `article-digest.md` with proof points from your portfolio projects/articles.
 (Optional) Create `interview-prep/question-bank.md` with questions you received in previous interviews to prepare answers to similar ones for the future.
+
 ### 4. Configure portals
 
 ```bash
@@ -64,6 +65,7 @@ Then paste a job offer URL or description. Career-ops will automatically evaluat
 | Check tracker status | `/career-ops tracker` |
 | Fill application form | `/career-ops apply` |
 | Get guidance for the interview | `/career-ops interview-prep` |
+
 ## Verify Setup
 
 ```bash

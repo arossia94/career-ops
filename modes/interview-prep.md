@@ -319,6 +319,13 @@ Prepare a short answer (60-120 seconds) to each of the relevant questions and ad
 
 If `interview-prep/question-bank.md` does not exist, copy `interview-prep/question-bank.example` and rename it as `interview-prep/question-bank.md`, then skip this step for the current run.
 
+## Step 8 - Questions previously received
+
+If the file `interview-prep/question-bank.md` exists, look for questions that are either under the "General" category or associated to jobs with a similar description.
+Do not be too strict about matching job descriptions, e.g. for a "Data Scientist" job, look at all the jobs there that contain "Data Scientists" and then pick the questions that are either general or, if they are more technical, match the JD for which we are preparing.
+
+Prepare a short answer (60-120 seconds) to each of the relevant questions and add it to the report.
+
 ## Output
 
 Save the full report to `interview-prep/{company-slug}-{role-slug}.md` with this header:
