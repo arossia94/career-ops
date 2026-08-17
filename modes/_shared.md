@@ -74,8 +74,8 @@ The evaluation uses 6 blocks (A-F) with a global score of 0-100:
 **Score interpretation:**
 - 90+ → Strong match, recommend applying immediately
 - 70-89 → Good match, worth applying
-- 50-69 → Decent but not ideal, apply only if specific reason
-- Below 50 → Recommend against applying (see Ethical Use in AGENTS.md)
+- 50-69 → Decent but not ideal, apply only if specific reason.
+- Below 50 → Strongly recommend against applying (see Ethical Use in AGENTS.md).
 
 **How to score the "Cultural signals" dimension:**
 1. Read `culture_screen.require` from `config/profile.yml`. If `culture_screen` is missing or empty, skip the structural capping and score the dimension qualitatively based on company size, remote policy, and stability.

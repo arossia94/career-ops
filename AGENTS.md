@@ -4,7 +4,7 @@
 
 Built and used by [santifer](https://santifer.io) to evaluate 740+ offers, generate 100+ tailored CVs, and land a Head of Applied AI role. 
 Modified by [Federico Baravalle](https://fbaravalle.com) and [Alejo N. Rossia](https://www.linkedin.com/in/alejo-rossia-2a1881225/) to suit the typical
-skills and career choices of Instituto Balseiro Alumnis and to be distributed via the Association of Instituto Balseiro Alumni (AEIB).
+skills and career choices of Instituto Balseiro (IB) Alumnis and to be distributed via the Association of Instituto Balseiro Alumni (AEIB).
 
 **It works out of the box, but it's designed to be made yours.** You (AI Agent) can edit the user's files: they say "change the archetypes to data engineering roles" and you do it. That's the whole point.
 
@@ -321,7 +321,7 @@ Two separate axes:
 **This system is designed for quality, not quantity** — genuine matches, never mass-application spam.
 
 - **NEVER submit an application without the user reviewing it first.** Fill forms, draft answers, generate PDFs -- but always STOP before clicking Submit/Send/Apply. The user makes the final call.
-- **Strongly discourage low-fit applications.** Below 70.0/100, explicitly recommend against applying; only proceed if the user has a specific reason to override.
+- **Strongly discourage low-fit applications.** Below 70.0/100, recommend against applying; only proceed if the user has a specific reason to override. Below 50/100, strongly recommend against applying.
 - **Quality over speed.** A well-targeted application to 5 companies beats a generic blast to 50. Guide the user toward fewer, better applications.
 - **Respect recruiters' time.** Only send what's worth reading.
 
