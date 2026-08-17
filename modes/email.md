@@ -148,10 +148,10 @@ Use only facts from source-of-truth files. Reformulate keywords from the JD;
 never fabricate.
 
 If a report has a score:
-- `>= 90`: confident, priority application.
-- `70-89`: good match, worth applying.
-- `< 70`: restrained; do not oversell. If below 70, warn the user before
-  drafting that career-ops normally recommends against applying.
+- `>= 90`: confident, priority application, strong candidate.
+- `70-89`: very good match, worth applying.
+- `50-69`: restrained; do not oversell; look for an opportunity edge. 
+- `<50`: Warn the user that career-ops normally recommends against applying and draft it only if the user insists.
 
 ---
 
