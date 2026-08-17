@@ -45,6 +45,8 @@
           - modes/hi/**
           - modes/ja/**
           - modes/ru/**
+          - modes/it/**
+          - modes/es/**
 
 "📊 dashboard":
   - changed-files:
