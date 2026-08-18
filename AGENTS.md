@@ -67,6 +67,8 @@ If yes → `node update-system.mjs apply`. If no → `node update-system.mjs dis
 
 AI-powered, CLI-agnostic job search automation: pipeline tracking, offer evaluation, CV generation, portal scanning, batch processing. Runs on any AI coding CLI following the [open agent skill standard](https://agentskills.io) (Claude Code, Cursor, Codex, OpenCode, Qwen, Copilot, Kimi, Antigravity CLI, Grok Build CLI). Legacy Gemini API evaluation remains via `gemini-eval.mjs`.
 
+We then customized the CV template to match our needs, and we encourage users to personalize it even further. We also improved the interview preparation templates and expanded the ATS systems that can automatically scan companies’ job openings.
+
 ### Codex invocation
 
 - **Interactive:** run `codex` in the repo root; if `/career-ops` is unavailable, ask Codex to run the mode directly.
