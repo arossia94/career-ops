@@ -2,9 +2,20 @@
 cv.md
 article-digest.md
 NOTES.md
-data/applications.md
-data/pipeline.md
-data/scan-history.tsv
+# data/ holds the tracker, scan history, contacts (third-party PII), received
+# offers and outcome logs. Ignore the contents, keep the directory scaffolding
+# so a fresh clone still has the folders. Matches upstream's pattern.
+data/*
+!data/.gitkeep
+!data/offers/
+data/offers/*
+!data/offers/.gitkeep
+!data/outcomes/
+data/outcomes/*
+!data/outcomes/.gitkeep
+!data/upskill/
+data/upskill/*
+!data/upskill/.gitkeep
 reports/*.md
 !reports/.gitkeep
 output/*
@@ -22,8 +33,12 @@ writing-samples/*
 
 # User config and customization (never auto-updated)
 config/profile.yml
+config/cv-facts.json
+config/benchmarks.yml
 portals.yml
 modes/_profile.md
+modes/_custom.md
+modes/_brief.md
 .update-dismissed
 .update-lock
 
@@ -51,3 +66,5 @@ package-lock.json
 
 # VS Code local
 .vscode/*
+# Browser-session artifacts (Playwright MCP)
+.playwright-mcp/

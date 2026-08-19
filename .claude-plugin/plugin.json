@@ -1,12 +1,14 @@
 {
   "name": "career-ops",
-  "version": "1.6.0",
+  "version": "1.24.0",
   "description": "AI job search command center — evaluate offers, generate CVs, scan portals, track applications",
   "author": {
     "name": "santifer",
     "url": "https://santifer.io"
   },
-  "skills": [".claude/skills/"],
+  "skills": [
+    ".claude/skills/"
+  ],
   "permissions": {
     "allow": [
       "Bash(node:*)",

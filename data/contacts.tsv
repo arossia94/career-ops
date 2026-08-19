@@ -1,0 +1,3 @@
+# contacts.tsv — job-search phonebook (user layer, third-party PII). One contact per line, no header row.
+# {name}\t{company}\t{type}\t{title}\t{phone}\t{email}\t{linkedin}\t{tracker#|-}\t{notes}
+# type (optional): recruiter|hiring-manager|peer|interviewer|other. Last line wins on same name+company.

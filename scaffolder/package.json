@@ -1,0 +1,41 @@
+{
+  "name": "@arossia94/career-ops",
+  "version": "1.24.0",
+  "private": true,
+  "description": "One-command installer for career-ops — the AI-powered job search pipeline built on Claude Code.",
+  "bin": {
+    "career-ops": "bin/cli.mjs"
+  },
+  "type": "module",
+  "files": [
+    "bin/cli.mjs",
+    "bin/skill-entrypoints.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "career-ops",
+    "claude-code",
+    "job-search",
+    "scaffold",
+    "create",
+    "cli"
+  ],
+  "author": "Santiago Fernández de Valderrama <hi@santifer.io> (https://santifer.io)",
+  "contributors": [
+    "Federico Baravalle <baravalle.fede@gmail.com> (https://fbaravalle.com)",
+    "Alejo N. Rossia <alejo.r94@gmail.com> (https://www.linkedin.com/in/alejo-rossia-2a1881225/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arossia94/career-ops.git",
+    "directory": "scaffolder"
+  },
+  "bugs": {
+    "url": "https://github.com/arossia94/career-ops/issues"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

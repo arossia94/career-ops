@@ -1,0 +1,3 @@
+# salary-observations.tsv — append-only compensation observation log (user layer). Never rewrite rows.
+# {tracker#}\t{YYYY-MM-DD}\t{desired|advertised|actual|stated}\t{amount}\t{currency}\t{source}\t{note}\t{round}\t{interviewer}
+# round/interviewer are optional trailing columns, meaningful only for type `stated`.
