@@ -14,7 +14,7 @@ Dada una descripción de puesto (JD) y la fecha/hora de la entrevista, construye
 6. **Perfil** en `config/profile.yml` + `modes/_profile.md` — lee para la narrativa, arquetipos y objetivos
 7. **Banco de historias** en `interview-prep/story-bank.md` — historias STAR+R existentes
 8. **Banco de preguntas** en `interview-prep/question-bank.md` — carencias existentes (si el archivo existe)
-
+9. **Compensación declarada previamente** — si se conoce el tracker#, ejecuta `node salary-gap.mjs --stated-for <tracker#>` (cero tokens). Cualquier observación `stated` previa es una cifra que el candidato ya comprometió, en una ronda anterior, ante un entrevistador concreto: incorpórala a la referencia rápida del Step 4 para que el candidato se mantenga consistente en lugar de renegociar sin darse cuenta.
 ---
 
 ## Step 1 — Evaluación de Ajuste
@@ -66,6 +66,8 @@ Identifica qué está evaluando realmente esta ronda basándote en:
 
 Calibra el plan según la ronda. Prepararse en exceso para un filtro desperdicia tiempo y crea la mentalidad equivocada.
 
+**Panel Intel (cuando se nombra a los panelistas).** Si hay dos o más entrevistadores nombrados para esta ronda —indicados por el usuario directamente, en una invitación de calendario pegada o en un correo de agendamiento pegado—, construye la tabla de Panel Intel antes de pasar al Step 3. Consulta `modes/interview-prep.md` § "Panel Intel table" (bajo Step 4 → `panel-mixed`) para el formato completo de la tabla y los tres subcomportamientos (ponderación del decisor frente a la línea de reporte de la JD, lectura de la señal de trayectoria profesional, pregunta de cierre adaptada a cada panelista): aplica aquí esa misma lógica y usa después las etiquetas de audiencia resultantes para dimensionar los bloques del Step 3 por panelista, en lugar de preparar un único pack genérico. Un solo entrevistador nombrado no necesita la tabla; ve directo al Step 3, calibrado al tipo de ronda de esa persona indicado más arriba.
+
 ---
 
 ## Step 3 — Construir el Plan de Bloques de Tiempo
@@ -74,47 +76,56 @@ Calcula las horas disponibles desde ahora hasta la hora de la entrevista. Divide
 
 Antes de dimensionar los bloques, revisa `interview-prep/question-bank.md` (si existe). Cualquier pregunta marcada con 🔴 de una ronda anterior es una carencia comprobada — obtiene un bloque dedicado independientemente de cómo la clasifique el análisis CV-vs-JD. Los datos de rendimiento reales superan al riesgo inferido.
 
+**Comprobación de investigación — antes de redactar el Bloque 4.** El Bloque 4 mapea historias a «tipos de pregunta probables», pero no dejes que eso derive en adivinar patrones cuando hay preguntas reales y reportadas a una comprobación de distancia:
+
+1. **Comprueba primero si ya existe investigación con fuentes.** Si `interview-prep/{company-slug}-{role-slug}.md` ya existe (una ejecución previa de `interview-prep`), lee sus preguntas con fuente de los Step 1/Step 3 y reutilízalas directamente: nunca vuelvas a buscar trabajo que ya se ha hecho y citado.
+2. **Si no existe ningún archivo de investigación previo, ejecuta directamente las consultas WebSearch del "Step 1 — Research" de `interview-prep.md`**, acotadas a la audiencia de esta ronda concreta (reclutador/RR. HH., hiring manager o panel técnico/de pares — ver el Step 2 más arriba) en lugar de la pasada completa de investigación de empresa.
+3. **La misma disciplina de etiquetado que `interview-prep.md`:** las preguntas con fuente citan su fuente; todo lo que no se encuentre recurre a `[inferred from JD]`. No inventes una tercera etiqueta ni un formato de cita distinto (ver "Tag conventions" en `interview-prep.md`).
+4. **Si la búsqueda realmente no arroja nada** (empresa poco conocida, sin reportes públicos de entrevistas), dilo explícitamente en la salida del plan y continúa con la inferencia por patrones de la JD y del perfil — el mismo principio de parcial-pero-honesto que `interview-prep.md` ya aplica a la información escasa, no el de todo-o-nada.
+
+Esta es la contraparte proactiva de la ruta de investigación reactiva que `modes/interview/practice.md` ya ejecuta a mitad de sesión (ver su "When company-intel is thin mid-session"): la misma etapa de investigación, invocada aquí antes de redactar el plan en lugar de cuando el candidato se traba en directo.
+
 **Plantilla (ajusta el tamaño de los bloques según el total de horas disponibles):**
 
-```text
+```
 Block 1 — Fija tu narrativa (primero, siempre)
-  - Escribe la cronología de tu background explícitamente
-  - Prepara "por qué esta empresa" con una conexión específica a tu historia
-  - Prepara la historia de tu punto de prueba más fuerte (versión de 30 segundos)
+  - Escribe explícitamente la cronología de tu trayectoria
+  - Prepara el "por qué esta empresa" con una conexión concreta con tu historia
+  - Prepara tu historia de proof point más fuerte (versión de 30 segundos)
   - Tiempo: ~15% de las horas disponibles
 
-Block 2 — Tema de dominio prioritario (carencia de mayor riesgo primero)
-  - Un tema por bloque — no mezclar
-  - Para cada uno: concepto → gancho de tu historia → posibles preguntas de seguimiento
+Block 2 — Tema de dominio prioritario (primero la brecha de mayor riesgo)
+  - Un tema por bloque — no los mezcles
+  - Para cada uno: concepto → tu gancho narrativo → preguntas de seguimiento probables
   - Tiempo: ~25% de las horas disponibles
 
 Block 3 — Tema de dominio secundario
-  - Segunda carencia de mayor riesgo
+  - La segunda brecha de mayor riesgo
   - Tiempo: ~20% de las horas disponibles
 
 Block 4 — Historias conductuales
-  - Asigna las historias existentes a los tipos de preguntas probables
+  - Mapea las historias existentes a los tipos de pregunta probables — primero las que tienen fuente de la Comprobación de investigación anterior, y las de `[inferred from JD]` para cubrir las brechas restantes
   - Practica la versión verbal de 2 minutos de cada una
-  - Prepara la Reflexión para cada una — el diferenciador de un candidato senior
+  - Prepara la Reflexión de cada una — el diferenciador del candidato sénior
   - Tiempo: ~15% de las horas disponibles
 
-Block 5 — Investigación de la empresa
-  - Páginas de productos relevantes para el rol
-  - Conexión entre tu historia y su dominio específico
-  - 3–4 preguntas agudas para hacerles
+Block 5 — Investigación de empresa
+  - Páginas de producto relevantes para el puesto
+  - Conexión entre tu trayectoria y su dominio concreto
+  - 3–4 preguntas afiladas para hacerles
   - Tiempo: ~10% de las horas disponibles
 
-Block 6 — Ensayo práctico (si el tiempo lo permite)
-  - Una pregunta por tema probable — en voz alta, cronometrada
+Block 6 — Simulacro de práctica (si da tiempo)
+  - Una pregunta por tema probable — en voz alta y cronometrada
   - Tiempo: ~10% de las horas disponibles
 
-Block 7 — Búfer + descanso
+Block 7 — Margen + descanso
   - Deja de estudiar 60–90 minutos antes de la entrevista
-  - Estudiar de más en la última hora añade ruido, no señal
+  - Empollar en la última hora añade ruido, no señal
   - Tiempo: el restante
 ```
 
-Ajusta el tamaño de los bloques según la gravedad de la carencia y el tipo de ronda. Si es un filtro, el Block 4 (conductual) y el Block 5 (investigación) son más importantes que los bloques de dominio profundo.
+Ajusta el tamaño de los bloques según la gravedad de la brecha y el tipo de ronda. Si es un screening, el Block 4 (conductual) y el Block 5 (investigación de empresa) son más importantes que los bloques de dominio profundo.
 
 ---
 
@@ -131,6 +142,8 @@ Al final del plan, produce una referencia rápida de una página que el candidat
 1. [el mensaje más importante a dejarle al entrevistador]
 2. [la pregunta más probable y tu primera frase de la respuesta]
 3. [la conexión entre tu historia y su dominio]
+
+**Compensación — ya tratada:** [solo si `--stated-for` devolvió observaciones previas] «Declaraste {amount} {currency} a {interviewer} el {date} en {round}. Mantén la coherencia salvo que algo material haya cambiado.» Omite este bloque por completo si no hay observaciones `stated` previas para este tracker# — no inventes una cifra que nunca se dijo.
 
 **Your questions to ask:**
 1. [pregunta 1]
@@ -154,4 +167,5 @@ Guarda el plan en `interview-prep/{company-slug}-{role-slug}.md` si el archivo n
 - **Un tema por bloque.** Mezclar temas en un solo bloque reduce la retención.
 - **Siempre incluye tiempo de descanso.** Un candidato descansado supera a uno que ha estudiado de más en el último momento.
 - **Nunca inventes información sobre la empresa.** Si no tienes investigación, dilo — no inventes afirmaciones sobre la cultura o detalles técnicos sobre la empresa.
-- **Nunca inventes afirmaciones para el candidato.** La frase ancla y los puntos de conversación previos a la entrevista en la referencia rápida (Step 4) deben estar basados en lo que el candidato realmente tiene — `cv.md`, `article-digest.md` o el banco de historias. No redactes afirmaciones que dependan de experiencia o métricas que el candidato no tiene. Si una afirmación aparece en `interview-prep/retracted-claims.md`, nunca la incluyas.
+- **Comprueba si hay preguntas reales reportadas antes del Block 4.** Reutiliza `interview-prep/{company-slug}-{role-slug}.md` si existe; si no, ejecuta las consultas del Step 1 de `interview-prep.md` acotadas a esta ronda. La misma disciplina de etiquetado que `interview-prep.md`: con fuente y cita, o `[inferred from JD]` cuando no aparezca nada real. Esta es la contraparte proactiva de "Never generate fake company intel" de más arriba: comprueba primero si existe lo real antes de recurrir a la inferencia.
+- **Nunca inventes afirmaciones por el candidato.** La frase ancla y los puntos de conversación previos a la entrevista de la referencia rápida (Step 4) deben estar fundamentados en lo que el candidato tiene realmente: `cv.md`, `article-digest.md` o el banco de historias. No redactes afirmaciones que dependan de experiencia o métricas que el candidato no tiene. Si una afirmación aparece en `interview-prep/retracted-claims.md`, nunca la incluyas.
