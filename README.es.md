@@ -1,25 +1,36 @@
-# Career-Ops
+# AEIB Career-Ops
 
-[English](README.md) | [Español](README.es.md) |
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/wordmark-dark.svg"><img src="docs/wordmark-light.svg" alt="career-ops" width="250" height="56"></picture></p>
+
+<div align="center">
+
+<p align="center"><picture><img src="docs/aeib_logo.png" alt="career-ops" width="250" height="29"></picture></p>
+
+<div align="center">
+
+
+[English](README.md) | [Español](README.es.md)
 
 <p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="Career-Ops — Sistema Multi-Agente de Busqueda de Empleo" width="800"></a>
+  <em>El IB te dio el conocimiento para triunfar en cualquier proceso de selección. AEIB Career-Ops te da la llave para entrar en ese proceso.</em>
 </p>
 
 <p align="center">
-  <em>Meses mandando CVs al vacio. Asi que me construi el sistema que echaba en falta.</em><br>
-  Las empresas usan IA para descartarte. <strong>Yo le di a los candidatos IA para <em>elegirlas</em>.</strong><br>
-  <em>Ahora es open source.</em>
+  <em>Este es un spin-off de <a href="https://github.com/santifer/career-ops">career-ops</a> adaptado para graduados del Instituto Balseiro (IB), distribuido a través de la Asociación de Ex-Alumnos del IB (AEIB).
+  Personalizado por IBers, para IBers.
+  </em>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
   <img src="https://img.shields.io/badge/OpenCode-111827?style=flat&logo=terminal&logoColor=white" alt="OpenCode">
+  <img src="https://img.shields.io/badge/Gemini_CLI-4285F4?style=flat&logo=google&logoColor=white" alt="Gemini CLI">
   <img src="https://img.shields.io/badge/Codex_(pronto)-6B7280?style=flat&logo=openai&logoColor=white" alt="Codex">
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT">
+  <a href="TRADEMARK.md"><img src="https://img.shields.io/badge/Trademark-Policy-blue.svg" alt="Trademark Policy"></a>
   <a href="https://discord.gg/S9zyz2CXZ"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord"></a>
   <br>
   <img src="https://img.shields.io/badge/EN-blue?style=flat" alt="EN">
@@ -27,7 +38,10 @@
   <img src="https://img.shields.io/badge/DE-grey?style=flat" alt="DE">
   <img src="https://img.shields.io/badge/FR-blue?style=flat" alt="FR">
   <img src="https://img.shields.io/badge/PT--BR-green?style=flat" alt="PT-BR">
+  <img src="https://img.shields.io/badge/KO-white?style=flat" alt="KO">
   <img src="https://img.shields.io/badge/JA-red?style=flat" alt="JA">
+  <img src="https://img.shields.io/badge/ZH--CN-red?style=flat" alt="ZH-CN">
+  <img src="https://img.shields.io/badge/ZH--TW-blue?style=flat" alt="ZH-TW">
 </p>
 
 ---
@@ -36,7 +50,7 @@
   <img src="docs/demo.gif" alt="Career-Ops Demo" width="800">
 </p>
 
-<p align="center"><strong>740+ ofertas evaluadas · 100+ CVs personalizados · 1 trabajo soñado conseguido</strong></p>
+
 
 <p align="center"><a href="https://discord.gg/S9zyz2CXZ"><img src="https://img.shields.io/badge/Unete_a_la_comunidad-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a></p>
 
@@ -44,17 +58,22 @@
 
 Career-Ops convierte cualquier CLI de IA en un centro de mando de busqueda de empleo. En vez de trackear aplicaciones en un spreadsheet, tienes un pipeline AI que:
 
-- **Evalua ofertas** con scoring estructurado A-F (10 dimensiones ponderadas)
+- **Evalúa ofertas** con scoring estructurado A-F (10 dimensiones ponderadas)
 - **Genera PDFs personalizados** -- CVs ATS-optimizados por oferta
 - **Escanea portales** automaticamente (Greenhouse, Ashby, Lever, webs de empresas)
 - **Procesa en batch** -- evalua 10+ ofertas en paralelo con sub-agentes
 - **Trackea todo** en una fuente de verdad unica con checks de integridad
 
-> **Importante: Esto NO es para spamear empresas.** Career-ops es un filtro -- te ayuda a encontrar las pocas ofertas que merecen tu tiempo entre cientos. El sistema recomienda encarecidamente no aplicar a nada por debajo de 70.0/100. Tu tiempo es valioso, y el del recruiter tambien. Siempre revisa antes de enviar.
+> **Importante: Esto NO es para spamear empresas.** Career-ops es un filtro -- te ayuda a encontrar las pocas ofertas que merecen tu tiempo entre cientos. El sistema recomienda no aplicar a nada por debajo de 70.0/100, y recomienda encarecidamente no aplicar a nada por debajo de 50.0/100. Tu tiempo es valioso, y el del recruiter tambien. Siempre revisa antes de enviar.
 
-> **Aviso: las primeras evaluaciones no seran buenas.** El sistema no te conoce todavia. Dale contexto -- tu CV, tu historia profesional, tus proof points, tus preferencias, en que eres bueno, que quieres evitar. Cuanto mas lo nutras, mejor filtra. Piensa en ello como hacer onboarding a un recruiter nuevo: la primera semana necesita conocerte, luego se vuelve invaluable.
+Career-ops es agéntico: Claude Code navega páginas de empleo con Playwright, evalúa el ajuste razonando sobre tu CV vs. la descripción del puesto (no matching de keywords), y adapta tu CV para cada oferta.
 
-Construido por alguien que lo uso para evaluar 740+ ofertas, generar 100+ CVs personalizados, y conseguir un rol de Head of Applied AI. [Lee el case study completo](https://santifer.io/career-ops).
+> **Aviso: las primeras evaluaciones no seran buenas.** El sistema no te conoce todavia. Dale contexto -- tu CV, tu historia profesional, tus proof points, tus writing samples, tus preferencias, en que eres bueno, que quieres evitar. Cuanto mas lo nutras, mejor filtra. Piensa en ello como hacer onboarding a un recruiter nuevo: la primera semana necesita conocerte, luego se vuelve invaluable.
+
+`career-ops` fue originalmente construido y usado para evaluar 740+ ofertas de empleo, generar 100+ CVs personalizados, y conseguir un rol de Head of Applied AI. [Lee el ejemplo completo](https://santifer.io/career-ops-system).
+
+Esta versión adaptada para ex-alumnos del IB nació de la voluntad de sus desarrolladores principales de dar un salto grande en sus carreras, y hoy se usa para buscar empleo en EE. UU. y Europa.
+La idea central de esta personalización es hacerla más precisa y mejor adaptada a roles altamente técnicos y especializados, sin perder la flexibilidad y apertura que ayudan a cambiar de industria o sector. En este mercado laboral tan competitivo, hoy dominado por IA en ambos extremos (candidato y reclutador), esta herramienta puede darle una ventaja crucial a los ex-alumnos del IB, en particular a los recién graduados, para conseguir su primer puesto o el trabajo de sus sueños.
 
 ## Features
 
@@ -97,6 +116,7 @@ claude   # Abrir Claude Code en este directorio
 # "Traduce los modes a ingles"
 # "Añade estas empresas a portals.yml"
 # "Actualiza mi perfil con este CV que te pego"
+# "Añade estas preguntas que recibí en una entrevista al banco de preguntas"
 
 # 6. Usar
 # Pega una URL de oferta o ejecuta /career-ops
@@ -105,6 +125,52 @@ claude   # Abrir Claude Code en este directorio
 > **El sistema esta diseñado para que Claude lo personalice.** Modes, arquetipos, scoring, scripts de negociacion -- solo pidelo. Claude lee los mismos archivos que usa, asi que sabe exactamente que editar.
 
 Guia completa en [docs/SETUP.md](docs/SETUP.md).
+
+## Integración con Gemini CLI
+
+Career-ops soporta [Gemini CLI](https://github.com/google-gemini/gemini-cli) de forma nativa — igual que Claude Code y OpenCode. Los 15 slash commands están disponibles, usando la misma lógica de evaluación en `modes/*.md`.
+
+### Opción A — Gemini CLI nativo (Recomendado)
+
+```bash
+# 1. Instalar Gemini CLI
+npm install -g @google/gemini-cli
+# o: npx @google/gemini-cli --version
+
+# 2. Autenticar (gratis — usa tu cuenta de Google)
+gemini auth
+
+# 3. Ejecutar en el directorio de career-ops
+cd career-ops
+gemini
+
+# 4. Usar los slash commands igual que en Claude Code
+/career-ops "Senior AI Engineer en Anthropic..."
+/career-ops-evaluate --file ./jds/openai.txt
+/career-ops-scan
+/career-ops-pdf
+/career-ops-tracker
+```
+
+El archivo `GEMINI.md` se carga automáticamente como contexto. Los 15 comandos están definidos en `.gemini/commands/*.toml`.
+
+### Opción B — Script standalone por API (sin instalar el CLI)
+
+```bash
+# 1. Consigue una API key gratis en https://aistudio.google.com/apikey
+cp .env.example .env
+# Edita .env → configura GEMINI_API_KEY=tu_clave_aqui
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Evaluar una descripción de puesto
+node gemini-eval.mjs "Buscamos un Senior AI Engineer..."
+node gemini-eval.mjs --file ./jds/mi-oferta.txt
+npm run gemini:eval -- "Texto del JD aquí"
+```
+
+> **Nivel gratuito:** Ambas opciones funcionan sin facturación. El CLI nativo usa OAuth de Google; el script de API usa `gemini-2.0-flash` (15 RPM, 1M tokens/día gratis).
 
 ## Uso
 
@@ -121,6 +187,9 @@ Career-ops es un unico slash command con multiples modos:
 /career-ops pipeline       → Procesar URLs pendientes
 /career-ops contacto       → Mensaje LinkedIn outreach
 /career-ops deep           → Research profundo de empresa
+/career-ops training       → Evaluar un curso/certificación
+/career-ops project        → Evaluar un proyecto de portfolio
+/career-ops interview-prep → Generar documento de preparación de entrevista específico por empresa
 ```
 
 O simplemente pega una URL o descripcion de oferta -- career-ops la detecta y ejecuta el pipeline completo.
@@ -237,6 +306,7 @@ career-ops/
 ├── data/                        # Tus datos de tracking (gitignored)
 ├── reports/                     # Reports de evaluacion (gitignored)
 ├── output/                      # PDFs generados (gitignored)
+├── interview-prep/              # Archivos para prepararte para entrevistas (gitignored)
 ├── fonts/                       # Space Grotesk + DM Sans
 ├── docs/                        # Setup, personalizacion, arquitectura
 └── examples/                    # CV de ejemplo, report, proof points
@@ -256,31 +326,20 @@ career-ops/
 - **Dashboard**: Go + Bubble Tea + Lipgloss (tema Catppuccin Mocha)
 - **Datos**: Tablas Markdown + config YAML + ficheros TSV batch
 
-## Sobre el autor
+## Sobre los autores
 
-Soy Santiago -- Head of Applied AI, ex-fundador (monte y vendi un negocio que sigue funcionando con mi nombre). Construi career-ops para gestionar mi propia busqueda de empleo. Funciono: lo use para conseguir mi puesto actual.
+Esta herramienta agéntica de IA es un spin-off del [career-ops](https://github.com/santifer/career-ops) original, desarrollado primero por [Santiago "santifer" Fernández de Valderrama Aparicio](https://santifer.io). Estamos muy agradecidos a Santiago y a la gran comunidad de desarrolladores del `career-ops` original, sin los cuales no habríamos podido hacer esto en tan poco tiempo.
 
-Mi portfolio y otros proyectos open source → [santifer.io](https://santifer.io)
+La idea original del proyecto y los desarrolladores principales de esta versión personalizada para IB Alumni son,
+
+- [Federico Baravalle](https://fbaravalle.com) -- Ingeniero Mecánico (IB14) con amplia experiencia en Argentina e Italia, fundador, apasionado por la Physical AI y la robótica.
+- [Dr. Alejo N. Rossia](https://www.linkedin.com/in/alejo-rossia-2a1881225/) -- Físico (IB14) con amplia experiencia en investigación de física teórica de altas energías, estadística, ciencia de datos, desarrollo de software científico y ML.
 
 ## Documentacion
 
-- [SETUP.md](docs/SETUP.md) -- Guia de instalacion
+- [SETUP.md](docs/SETUP.md) -- Guía de instalacion
 - [CUSTOMIZATION.md](docs/CUSTOMIZATION.md) -- Como personalizar
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) -- Como funciona el sistema
-
-## Tambien Open Source
-
-- **[cv-santiago](https://github.com/arossia94/cv-santiago)** -- El portfolio (santifer.io) con chatbot IA, dashboard LLMOps y case studies. Si necesitas un portfolio para acompañar tu busqueda de empleo, echale un vistazo.
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=arossia94%2Fcareer-ops&type=timeline&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=arossia94/career-ops&type=timeline&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=arossia94/career-ops&type=timeline&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=arossia94/career-ops&type=timeline&legend=top-left" />
- </picture>
-</a>
 
 ## Aviso legal
 
@@ -293,14 +352,18 @@ Mi portfolio y otros proyectos open source → [santifer.io](https://santifer.io
 
 Ver [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md) para mas detalles. Este software se proporciona bajo la [Licencia MIT](LICENSE) "tal cual", sin garantia de ningun tipo.
 
-## Licencia
+## Contribuidores
 
-MIT
+<a href="https://github.com/arossia94/career-ops/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=arossia94/career-ops" />
+</a>
 
-## Conecta
+¿Conseguiste trabajo usando career-ops? [¡Comparte tu historia!](https://github.com/arossia94/career-ops/issues/new?template=i-got-hired.yml)
 
-[![Website](https://img.shields.io/badge/santifer.io-000?style=for-the-badge&logo=safari&logoColor=white)](https://santifer.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santifer)
-[![X](https://img.shields.io/badge/X-000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/santifer)
+## Licencia y Marca
+
+El código está licenciado bajo [MIT](LICENSE). El nombre y la marca "career-ops" se rigen por la [Política de Marca](TRADEMARK.md) — permisiva para uso comunitario, reservada para nombres de productos comerciales y respaldo.
+
+## Conectemos
+
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/S9zyz2CXZ)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hola@santifer.io)

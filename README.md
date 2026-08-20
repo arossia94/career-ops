@@ -1,15 +1,24 @@
-# Career-Ops
+# AEIB Career-Ops
 
-[English](README.md) | [Español](README.es.md) |
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/wordmark-dark.svg"><img src="docs/wordmark-light.svg" alt="career-ops" width="250" height="56"></picture></p>
+
+<div align="center">
+
+<p align="center"><picture><img src="docs/aeib_logo.png" alt="career-ops" width="250" height="29"></picture></p>
+
+<div align="center">
+
+
+[English](README.md) | [Español](README.es.md)
 
 <p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="Career-Ops — Multi-Agent Job Search System" width="800"></a>
+  <em> The IB gave you the knowledge to smash any hiring process. AEIB Career-Ops gives you the key to enter in the hiring process .</em>
 </p>
 
 <p align="center">
-  <em>I spent months applying to jobs the hard way. So I engineered the system I wish I had.</em><br>
-  Companies use AI to filter candidates. <strong>I just gave candidates AI to <em>choose</em> companies.</strong><br>
-  <em>Now it's open source.</em>
+  <em> This is an IB Alumni-tailored spin-off of the original [career-ops](https://github.com/santifer/career-ops), to be distributed via the IB Alumni Association (AEIB).
+  Customized by IB Alumni, for IB Alumni.
+  </em>
 </p>
 
 <p align="center">
@@ -41,7 +50,7 @@
   <img src="docs/demo.gif" alt="Career-Ops Demo" width="800">
 </p>
 
-<p align="center"><strong>740+ job listings evaluated · 100+ personalized CVs · 1 dream role landed</strong></p>
+
 
 <p align="center"><a href="https://discord.gg/S9zyz2CXZ"><img src="https://img.shields.io/badge/Join_the_community-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a></p>
 
@@ -55,13 +64,16 @@ Career-Ops turns any AI coding CLI into a full job search command center. Instea
 - **Processes in batch** -- evaluate 10+ offers in parallel with sub-agents
 - **Tracks everything** in a single source of truth with integrity checks
 
-> **Important: This is NOT a spray-and-pray tool.** Career-ops is a filter -- it helps you find the few offers worth your time out of hundreds. The system strongly recommends against applying to anything scoring below 70.0/100. Your time is valuable, and so is the recruiter's. Always review before submitting.
+> **Important: This is NOT a spray-and-pray tool.** Career-ops is a filter -- it helps you find the few offers worth your time out of hundreds. The system recommends against applying to anything scoring below 70.0/100, and strongly recommends against anything below 50.0/100. Your time is valuable, and so is the recruiter's. Always review before submitting.
 
 Career-ops is agentic: Claude Code navigates career pages with Playwright, evaluates fit by reasoning about your CV vs the job description (not keyword matching), and adapts your resume per listing.
 
-> **Heads up: the first evaluations won't be great.** The system doesn't know you yet. Feed it context -- your CV, your career story, your proof points, your preferences, what you're good at, what you want to avoid. The more you nurture it, the better it gets. Think of it as onboarding a new recruiter: the first week they need to learn about you, then they become invaluable.
+> **Heads up: the first evaluations won't be great.** The system doesn't know you yet. Feed it context -- your CV, your career story, your proof points, your writing samples, your preferences, what you're good at, what you want to avoid. The more you nurture it, the better it gets. Think of it as onboarding a new recruiter: the first week they need to learn about you, then they become invaluable.
 
-Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role. [Read the full case study](https://santifer.io/career-ops-system).
+The original `career-ops` was built and used to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role. [Read the full case study](https://santifer.io/career-ops-system). 
+
+This IB Alumni-tailored version was kick-started by the wish of the main developers to give the next big step in their careers and is being used to look for jobs in the US and Europe.
+The main idea behind the customization is to make it more precise, better suited to heavily-technical and specialized roles, while keeping the flexibility and open-mindedness that can help you change industry and sector. In this heavily competitive job market, now dominated by AI applications on both ends, recruitee and recruiter, this tool can give a crucial edge to the IB Alumni, in particular recent graduates in order to land their first or dream job.
 
 ## Features
 
@@ -313,25 +325,18 @@ career-ops/
 
 ## About the Authors
 
-This agentic AI tool is a development from the original [career-ops](https://github.com/santifer/career-ops) first developed by [santifer](https://santifer.io), to whom we are grateful and indebted.
+This agentic AI tool is a spin-off development from the original [career-ops](https://github.com/santifer/career-ops), first developed by [Santiago "santifer" Fernández de Valderrama Aparicio](https://santifer.io). We are very thankful to Santiago and the large community of developers of the original `career-ops`, without whom we could not have done this in such a short time.
 
-This development has been tailored to the career needs of alumni of Instituto Balseiro - Universidad Nacional de Cuyo and publicized via its Alumni Association (AEIB), but is left open-source for everyone's benefit.
+The original idea of the project and lead developers of this IB Alumi customized version are,
 
-The lead developers of this version are,
+- [Federico Baravalle](https://fbaravalle.com) -- Mechanical Engineer (IB14) with vast experience in Argentina and Italy, founder, passionate about Physical AI and robotics.
+- [Dr Alejo N. Rossia](https://www.linkedin.com/in/alejo-rossia-2a1881225/) -- Physicist (IB14) with large experience in theoretical particle physics research, statistics, data science, scientific software development, and ML.
 
-- Federico Baravalle -- Mechanical Engineer with vast experience in Argentina and Italy, founder, passionate about Physical AI and robotics.
-- Dr Alejo Rossia -- Physicist with large experience in theoretical particle physics research, statistics, data science, and ML.
+## Documentation
 
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=arossia94%2Fcareer-ops&type=timeline&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=arossia94/career-ops&type=timeline&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=arossia94/career-ops&type=timeline&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=arossia94/career-ops&type=timeline&legend=top-left" />
- </picture>
-</a>
+- [SETUP.md](docs/SETUP.md) -- Installation guide
+- [CUSTOMIZATION.md](docs/CUSTOMIZATION.md) -- How to customize
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) -- How the system works
 
 ## Disclaimer
 
@@ -361,8 +366,4 @@ endorsement.
 
 ## Let's Connect
 
-[![Website](https://img.shields.io/badge/santifer.io-000?style=for-the-badge&logo=safari&logoColor=white)](https://santifer.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santifer)
-[![X](https://img.shields.io/badge/X-000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/santifer)
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/S9zyz2CXZ)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hi@santifer.io)
